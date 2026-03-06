@@ -10,10 +10,8 @@ import AuditLog from '../models/AuditLog.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import asyncHandler from '../utils/asyncHandler.js';
-import {
-  calculateRevenueSplit,
-  PLATFORM_FEE_PERCENTAGE,
-} from '../utils/constants.js';
+import { PLATFORM_FEE_PERCENTAGE } from '../utils/constants.js';
+import { calculateRevenueSplit } from '../utils/helpers.js';
 
 // @desc    Create checkout session
 // @route   POST /api/v1/payments/checkout

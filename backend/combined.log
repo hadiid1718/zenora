@@ -1,3 +1,99 @@
 {"level":"info","message":"Received a request to the root endpoint","service":"zenora-api","timestamp":"2026-03-04T22:03:05.817Z"}
 {"level":"info","message":"::1 - - [04/Mar/2026:22:03:05 +0000] \"GET / HTTP/1.1\" 200 53 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0\"","service":"zenora-api","timestamp":"2026-03-04T22:03:05.827Z"}
 {"level":"info","message":"::1 - - [04/Mar/2026:22:03:05 +0000] \"GET /favicon.ico HTTP/1.1\" 404 150 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0\"","service":"zenora-api","timestamp":"2026-03-04T22:03:05.987Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-01.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T00:19:09.318Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T00:19:09.322Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T00:19:09.329Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T00:19:09.330Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:09.334Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:09.335Z"}
+{"level":"warn","message":"Redis connection failed (running without cache):","service":"zenora-api","timestamp":"2026-03-06T00:19:09.336Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:09.387Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:09.387Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:09.490Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:09.491Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:09.643Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:09.644Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:09.852Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:09.852Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:10.112Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:10.113Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:10.417Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:10.418Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:10.776Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:10.777Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:11.177Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:11.178Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:11.639Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:11.639Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:12.153Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:12.153Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:12.716Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:12.716Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-01.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T00:19:16.235Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T00:19:16.239Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T00:19:16.247Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T00:19:16.247Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:16.254Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:16.255Z"}
+{"level":"warn","message":"Redis connection failed (running without cache):","service":"zenora-api","timestamp":"2026-03-06T00:19:16.256Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:16.311Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:16.311Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:16.413Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:16.414Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:16.571Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:16.572Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:16.776Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:16.776Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:17.038Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:17.039Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:17.344Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:17.344Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:17.698Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:17.699Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:18.101Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:18.102Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:18.555Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:18.556Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:19.071Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:19.071Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:19.633Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:19.634Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:20.241Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:20.242Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:20.900Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:20.901Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:21.616Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:21.617Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:22.382Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:22.382Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:23.195Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:23.195Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:24.054Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:24.055Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:24.961Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:24.961Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:25.918Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:25.919Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:26.932Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:26.933Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:27.995Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:27.996Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:29.102Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:29.103Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:30.259Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:30.259Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:31.465Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:31.466Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:32.726Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:32.727Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:34.041Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:34.043Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:35.401Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:35.403Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:36.806Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:36.806Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:38.273Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:38.274Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T00:19:39.776Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T00:19:39.777Z"}

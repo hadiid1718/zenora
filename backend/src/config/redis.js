@@ -11,6 +11,10 @@ const connectRedis = () => {
       password: process.env.REDIS_PASSWORD || undefined,
       maxRetriesPerRequest: 3,
       retryStrategy(times) {
+        if (times > 10) {
+          logger.warn('Redis max retries reached, stopping reconnection');
+          return null;
+        }
         const delay = Math.min(times * 50, 2000);
         return delay;
       },
