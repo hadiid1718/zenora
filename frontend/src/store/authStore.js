@@ -47,10 +47,13 @@ export const useAuthStore = create(
       },
 
       logout: async () => {
-        try {
-          await api.post('/auth/logout');
-        } catch {
-          // Continue logout even if API fails
+        const token = get().accessToken;
+        if (token) {
+          try {
+            await api.post('/auth/logout');
+          } catch {
+            // Continue logout even if API fails
+          }
         }
         set({
           user: null,

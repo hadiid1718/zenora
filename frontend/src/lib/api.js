@@ -45,7 +45,11 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (refreshError) {
-        useAuthStore.getState().logout();
+        useAuthStore.setState({
+          user: null,
+          accessToken: null,
+          isAuthenticated: false,
+        });
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }

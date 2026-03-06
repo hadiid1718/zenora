@@ -199,7 +199,6 @@ const courseSchema = new mongoose.Schema(
 );
 
 // Indexes for performance
-courseSchema.index({ slug: 1 });
 courseSchema.index({ instructor: 1 });
 courseSchema.index({ category: 1 });
 courseSchema.index({ status: 1, publishedAt: -1 });

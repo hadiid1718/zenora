@@ -1,22 +1,19 @@
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, BookOpen } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import toast from 'react-hot-toast';
 
-const LoginPage = () => {
+const InstructorLoginPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { login, isLoading } = useAuthStore();
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
-
-  const from = location.state?.from?.pathname || '/';
 
   const validate = () => {
     const errs = {};
@@ -34,15 +31,19 @@ const LoginPage = () => {
     try {
       const data = await login(form.email, form.password);
       const user = data.data.user;
-      toast.success('Welcome back!');
 
-      if (user.role === 'admin') {
-        navigate('/admin', { replace: true });
-      } else if (user.role === 'instructor') {
-        navigate('/instructor', { replace: true });
-      } else {
-        navigate(from, { replace: true });
+      if (user.role !== 'instructor' && user.role !== 'admin') {
+        useAuthStore.setState({
+          user: null,
+          accessToken: null,
+          isAuthenticated: false,
+        });
+        toast.error('Access denied. Instructor account required.');
+        return;
       }
+
+      toast.success('Welcome back, Instructor!');
+      navigate('/instructor', { replace: true });
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed');
     }
@@ -60,8 +61,13 @@ const LoginPage = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-surface-900 mb-2">Welcome back</h2>
-        <p className="text-surface-800/60">Sign in to continue your learning journey</p>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-brand-100 flex items-center justify-center">
+            <BookOpen className="w-5 h-5 text-brand-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-surface-900">Instructor Login</h2>
+        </div>
+        <p className="text-surface-800/60">Sign in to manage your courses and students</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -97,24 +103,8 @@ const LoginPage = () => {
           </button>
         </div>
 
-        <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="w-4 h-4 rounded border-surface-300 text-brand-600 focus:ring-brand-500"
-            />
-            <span className="text-sm text-surface-800/60">Remember me</span>
-          </label>
-          <Link
-            to="/forgot-password"
-            className="text-sm font-medium text-brand-600 hover:text-brand-700"
-          >
-            Forgot password?
-          </Link>
-        </div>
-
         <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
-          Sign In
+          Sign In as Instructor
         </Button>
       </form>
 
@@ -124,21 +114,25 @@ const LoginPage = () => {
             <div className="w-full border-t border-surface-200" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-surface-50 px-4 text-surface-800/40 uppercase tracking-wider">
-              Or
-            </span>
+            <span className="bg-surface-50 px-4 text-surface-800/40 uppercase tracking-wider">Or</span>
           </div>
         </div>
       </div>
 
       <p className="mt-6 text-center text-sm text-surface-800/60">
-        Don't have an account?{' '}
-        <Link to="/register" className="font-semibold text-brand-600 hover:text-brand-700">
-          Sign up for free
+        Don&apos;t have an instructor account?{' '}
+        <Link to="/instructor/register" className="font-semibold text-brand-600 hover:text-brand-700">
+          Register as Instructor
+        </Link>
+      </p>
+
+      <p className="mt-3 text-center text-sm text-surface-800/60">
+        <Link to="/login" className="font-semibold text-brand-600 hover:text-brand-700">
+          &larr; Back to student login
         </Link>
       </p>
     </motion.div>
   );
 };
 
-export default LoginPage;
+export default InstructorLoginPage;

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './components/layout/MainLayout';
 import AuthLayout from './components/layout/AuthLayout';
 import DashboardLayout from './components/layout/DashboardLayout';
@@ -27,6 +27,8 @@ const WishlistPage = lazy(() => import('./pages/student/WishlistPage'));
 const CertificatesPage = lazy(() => import('./pages/student/CertificatesPage'));
 
 // Instructor
+const InstructorLoginPage = lazy(() => import('./pages/instructor/InstructorLoginPage'));
+const InstructorRegisterPage = lazy(() => import('./pages/instructor/InstructorRegisterPage'));
 const InstructorDashboard = lazy(() => import('./pages/instructor/InstructorDashboard'));
 const InstructorCourses = lazy(() => import('./pages/instructor/InstructorCourses'));
 const CreateCoursePage = lazy(() => import('./pages/instructor/CreateCoursePage'));
@@ -36,6 +38,7 @@ const InstructorWithdrawals = lazy(() => import('./pages/instructor/InstructorWi
 const InstructorReviews = lazy(() => import('./pages/instructor/InstructorReviews'));
 
 // Admin
+const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AdminInstructors = lazy(() => import('./pages/admin/AdminInstructors'));
@@ -51,7 +54,15 @@ const App = () => (
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/instructor/login" element={<InstructorLoginPage />} />
+        <Route path="/instructor/register" element={<InstructorRegisterPage />} />
       </Route>
+
+      {/* Admin login — standalone, no AuthLayout sidepanel */}
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+
+      {/* Redirect /teach to instructor registration */}
+      <Route path="/teach" element={<Navigate to="/instructor/register" replace />} />
 
       {/* Public + student routes */}
       <Route element={<MainLayout />}>

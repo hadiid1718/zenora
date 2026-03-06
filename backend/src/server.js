@@ -4,6 +4,7 @@ import connectDB from './config/db.js';
 import connectRedis from './config/redis.js';
 import configureCloudinary from './config/cloudinary.js';
 import logger from './config/logger.js';
+import User from './models/User.js';
 
 const PORT = process.env.PORT || 5000;
 
@@ -17,6 +18,9 @@ const startServer = async () => {
 
     // Configure Cloudinary
     configureCloudinary();
+
+    // Seed default admin
+    await seedAdmin();
 
     // Create temp upload directory
     const fs = await import('fs');
@@ -32,6 +36,30 @@ const startServer = async () => {
   } catch (error) {
     logger.error('Failed to start server:', error);
     process.exit(1);
+  }
+};
+
+const seedAdmin = async () => {
+  try {
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminEmail || !adminPassword) return;
+
+    const existing = await User.findOne({ email: adminEmail });
+    if (!existing) {
+      await User.create({
+        firstName: 'System',
+        lastName: 'Admin',
+        email: adminEmail,
+        password: adminPassword,
+        role: 'admin',
+        isEmailVerified: true,
+        isActive: true,
+      });
+      logger.info('Default admin account created');
+    }
+  } catch (err) {
+    logger.error(`Admin seed failed: ${err.message}`);
   }
 };
 

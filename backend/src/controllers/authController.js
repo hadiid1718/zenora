@@ -46,7 +46,7 @@ export const register = asyncHandler(async (req, res) => {
     throw ApiError.conflict('Email already registered');
   }
 
-  const allowedRole = role === 'instructor' ? 'student' : role || 'student';
+  const allowedRole = ['student', 'instructor'].includes(role) ? role : 'student';
 
   const user = await User.create({
     firstName,
