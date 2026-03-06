@@ -9,7 +9,7 @@ import {
 import { useAuthStore } from '../../store/authStore';
 import { useCartStore } from '../../store/cartStore';
 import Avatar from '../ui/Avatar';
-import { cn, debounce } from '../../lib/utils';
+import { cn } from '../../lib/utils';
 
 const navLinks = [
   { to: '/courses', label: 'Browse Courses' },

@@ -17,7 +17,7 @@ const AdminInstructors = () => {
   });
 
   const approveMutation = useMutation({
-    mutationFn: (userId) => api.patch(`/admin/instructors/${userId}/approve`),
+    mutationFn: (userId) => api.put(`/admin/instructors/${userId}/approve`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-pending-instructors'] });
       toast.success('Instructor approved');

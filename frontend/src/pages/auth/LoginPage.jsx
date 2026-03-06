@@ -104,7 +104,7 @@ const LoginPage = () => {
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-3 top-[38px] p-1 rounded-md text-surface-800/30 hover:text-surface-800/60 transition-colors"
+            className="absolute right-3 top-9.5 p-1 rounded-md text-surface-800/30 hover:text-surface-800/60 transition-colors"
           >
             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>

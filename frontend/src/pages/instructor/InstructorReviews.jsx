@@ -24,7 +24,7 @@ const InstructorReviews = () => {
       const allReviews = [];
       for (const course of courses.slice(0, 10)) {
         try {
-          const reviewsRes = await api.get(`/student/courses/${course._id}/reviews`);
+          const reviewsRes = await api.get(`/student/reviews/${course._id}`);
           const reviews = reviewsRes.data.data.reviews || [];
           reviews.forEach((r) => allReviews.push({ ...r, courseName: course.title }));
         } catch {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Plus, Trash2, Save, Upload, ChevronDown, ChevronUp,
@@ -15,7 +15,6 @@ import toast from 'react-hot-toast';
 
 const EditCoursePage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const [activeSection, setActiveSection] = useState('details');
@@ -52,8 +51,8 @@ const EditCoursePage = () => {
   });
 
   const addLessonMutation = useMutation({
-    mutationFn: ({ moduleIndex, lesson }) =>
-      api.post(`/courses/${id}/modules/${moduleIndex}/lessons`, lesson),
+    mutationFn: ({ moduleId, lesson }) =>
+      api.post(`/courses/${id}/modules/${moduleId}/lessons`, lesson),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['edit-course', id] });
       setNewLessonData((p) => ({ ...p, [variables.moduleIndex]: undefined }));
@@ -63,12 +62,29 @@ const EditCoursePage = () => {
   });
 
   const submitMutation = useMutation({
-    mutationFn: () => api.post(`/courses/${id}/submit`),
+    mutationFn: () => api.put(`/courses/${id}/submit`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['edit-course', id] });
       toast.success('Course submitted for review');
     },
     onError: (err) => toast.error(err.response?.data?.message || 'Failed to submit'),
+  });
+
+  const videoMutation = useMutation({
+    mutationFn: ({ moduleId, lessonId, file }) => {
+      const formData = new FormData();
+      formData.append('video', file);
+      return api.put(
+        `/courses/${id}/modules/${moduleId}/lessons/${lessonId}/video`,
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['edit-course', id] });
+      toast.success('Video uploaded');
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'Video upload failed'),
   });
 
   const thumbnailMutation = useMutation({
@@ -218,6 +234,27 @@ const EditCoursePage = () => {
                     {lesson.isFreePreview && (
                       <Badge variant="accent" className="text-xs">Preview</Badge>
                     )}
+                    {lesson.type === 'video' && (
+                      lesson.video?.url ? (
+                        <Badge variant="brand" className="text-xs">Video uploaded</Badge>
+                      ) : (
+                        <label className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium text-brand-600 bg-brand-50 hover:bg-brand-100 cursor-pointer transition-colors">
+                          <Upload className="w-3 h-3" />
+                          {videoMutation.isPending ? 'Uploading...' : 'Upload Video'}
+                          <input
+                            type="file"
+                            accept="video/mp4,video/webm,video/quicktime"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                videoMutation.mutate({ moduleId: mod._id, lessonId: lesson._id, file });
+                              }
+                            }}
+                          />
+                        </label>
+                      )
+                    )}
                   </div>
                 ))}
               </div>
@@ -268,6 +305,7 @@ const EditCoursePage = () => {
                           const lessonData = newLessonData[mi];
                           if (!lessonData?.title?.trim()) return toast.error('Title required');
                           addLessonMutation.mutate({
+                            moduleId: mod._id,
                             moduleIndex: mi,
                             lesson: {
                               title: lessonData.title.trim(),
@@ -333,15 +371,15 @@ const EditCoursePage = () => {
         <div className="max-w-3xl">
           <div className="bg-surface-0 rounded-2xl border border-surface-200/60 p-6 space-y-5">
             <h2 className="text-lg font-semibold text-surface-900">Course Thumbnail</h2>
-            {course.thumbnail && (
+            {course.thumbnail?.url && (
               <div className="w-64 aspect-video rounded-xl overflow-hidden bg-surface-100">
-                <img src={course.thumbnail} alt="" className="w-full h-full object-cover" />
+                <img src={course.thumbnail.url} alt="" className="w-full h-full object-cover" />
               </div>
             )}
             <div>
               <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-surface-200 text-sm font-medium text-surface-800/70 hover:bg-surface-50 cursor-pointer transition-colors">
                 <Image className="w-4 h-4" />
-                {course.thumbnail ? 'Change Thumbnail' : 'Upload Thumbnail'}
+                {course.thumbnail?.url ? 'Change Thumbnail' : 'Upload Thumbnail'}
                 <input
                   type="file"
                   accept="image/*"

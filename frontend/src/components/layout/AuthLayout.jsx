@@ -47,17 +47,17 @@ const AuthLayout = () => {
         {/* Mesh / glow blobs */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
-            className="absolute -top-24 -left-24 w-[480px] h-[480px] rounded-full bg-brand-500/15 blur-[100px]"
+            className="absolute -top-24 -left-24 w-120 h-120 rounded-full bg-brand-500/15 blur-[100px]"
             animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute bottom-0 right-0 w-[420px] h-[420px] rounded-full bg-accent-400/15 blur-[100px]"
+            className="absolute bottom-0 right-0 w-105 h-105 rounded-full bg-accent-400/15 blur-[100px]"
             animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.9, 0.5] }}
             transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full bg-brand-300/10 blur-[80px]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-85 h-85 rounded-full bg-brand-300/10 blur-[80px]"
             animate={{ scale: [1.1, 1, 1.1] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -130,7 +130,7 @@ const AuthLayout = () => {
             {panel.features.map(({ icon: FIcon, text }) => (
               <span
                 key={text}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.08] backdrop-blur-sm border border-white/10 text-sm text-white/80"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/8 backdrop-blur-sm border border-white/10 text-sm text-white/80"
               >
                 <FIcon className="w-4 h-4 text-accent-300" />
                 {text}
@@ -143,14 +143,14 @@ const AuthLayout = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-14 max-w-sm w-full bg-white/[0.06] backdrop-blur-lg border border-white/10 rounded-2xl p-6"
+            className="mt-14 max-w-sm w-full bg-white/6 backdrop-blur-lg border border-white/10 rounded-2xl p-6"
           >
             <p className="text-sm text-white/70 italic leading-relaxed">
               &ldquo;Zenora changed the trajectory of my career. The courses are world-class and
               the community is incredibly supportive.&rdquo;
             </p>
             <div className="mt-4 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-accent-400 flex items-center justify-center text-white font-bold text-sm">
+              <div className="w-9 h-9 rounded-full bg-linear-to-br from-brand-400 to-accent-400 flex items-center justify-center text-white font-bold text-sm">
                 A
               </div>
               <div>
@@ -168,7 +168,7 @@ const AuthLayout = () => {
         <div className="absolute top-0 right-0 w-72 h-72 bg-brand-100/40 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-60 h-60 bg-accent-100/30 rounded-full blur-[100px] pointer-events-none" />
 
-        <div className="w-full max-w-[440px] relative z-10">
+        <div className="w-full max-w-110 relative z-10">
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center justify-center mb-10">
             <Link to="/" className="flex items-center gap-2.5">

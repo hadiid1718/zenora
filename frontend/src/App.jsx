@@ -37,6 +37,8 @@ const EditCoursePage = lazy(() => import('./pages/instructor/EditCoursePage'));
 const InstructorCoupons = lazy(() => import('./pages/instructor/InstructorCoupons'));
 const InstructorWithdrawals = lazy(() => import('./pages/instructor/InstructorWithdrawals'));
 const InstructorReviews = lazy(() => import('./pages/instructor/InstructorReviews'));
+const InstructorAnalytics = lazy(() => import('./pages/instructor/InstructorAnalytics'));
+const InstructorSettings = lazy(() => import('./pages/instructor/InstructorSettings'));
 
 // Admin
 const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
@@ -94,8 +96,10 @@ const App = () => (
           <Route path="courses/new" element={<CreateCoursePage />} />
           <Route path="courses/:id/edit" element={<EditCoursePage />} />
           <Route path="coupons" element={<InstructorCoupons />} />
+          <Route path="analytics" element={<InstructorAnalytics />} />
           <Route path="withdrawals" element={<InstructorWithdrawals />} />
           <Route path="reviews" element={<InstructorReviews />} />
+          <Route path="settings" element={<InstructorSettings />} />
         </Route>
       </Route>
 

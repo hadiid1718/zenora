@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
 import {
   Play, Clock, BarChart3, Users, Globe, Award, BookOpen,
   ChevronDown, ChevronUp, Heart, ShoppingCart, Check,
@@ -34,7 +33,7 @@ const CourseDetailPage = () => {
 
   const { data: reviewsData } = useQuery({
     queryKey: ['course-reviews', course?._id],
-    queryFn: () => api.get(`/student/courses/${course._id}/reviews`).then((r) => r.data.data),
+    queryFn: () => api.get(`/student/reviews/${course._id}`).then((r) => r.data.data),
     enabled: !!course?._id,
   });
 
@@ -147,7 +146,7 @@ const CourseDetailPage = () => {
 
             <div className="flex items-center gap-3">
               <Avatar
-                src={course.instructor?.avatar}
+                src={course.instructor?.avatar?.url}
                 firstName={course.instructor?.firstName}
                 lastName={course.instructor?.lastName}
                 size="sm"
@@ -304,10 +303,10 @@ const CourseDetailPage = () => {
             <div className="lg:sticky lg:top-24">
               <div className="bg-surface-0 rounded-2xl border border-surface-200/60 overflow-hidden shadow-card">
                 {/* Thumbnail */}
-                {course.thumbnail && (
+                {course.thumbnail?.url && (
                   <div className="aspect-video bg-surface-100 relative">
                     <img
-                      src={course.thumbnail}
+                      src={course.thumbnail.url}
                       alt={course.title}
                       className="w-full h-full object-cover"
                     />

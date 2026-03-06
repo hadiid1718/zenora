@@ -7,7 +7,6 @@ import CourseCard from '../../components/ui/CourseCard';
 import { CourseCardSkeleton } from '../../components/ui/Skeleton';
 import { Pagination } from '../../components/ui/DataTable';
 import Select from '../../components/ui/Select';
-import { debounce } from '../../lib/utils';
 
 const sortOptions = [
   { value: 'newest', label: 'Newest' },
@@ -32,7 +31,7 @@ const priceOptions = [
 
 const CoursesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [, setFiltersOpen] = useState(false);
 
   const page = parseInt(searchParams.get('page') || '1', 10);
   const q = searchParams.get('q') || '';

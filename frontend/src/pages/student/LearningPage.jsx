@@ -12,7 +12,7 @@ import Button from '../../components/ui/Button';
 import toast from 'react-hot-toast';
 
 const LearningPage = () => {
-  const { slug } = useParams();
+  const { courseId } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -20,9 +20,9 @@ const LearningPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['learning', slug],
+    queryKey: ['learning', courseId],
     queryFn: async () => {
-      const res = await api.get(`/student/courses/${slug}/content`);
+      const res = await api.get(`/student/courses/${courseId}`);
       return res.data.data;
     },
   });
@@ -31,7 +31,7 @@ const LearningPage = () => {
     mutationFn: (lessonId) =>
       api.post(`/student/courses/${data?.enrollment?.course?._id}/lessons/${lessonId}/complete`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['learning', slug] });
+      queryClient.invalidateQueries({ queryKey: ['learning', courseId] });
       toast.success('Lesson completed!');
     },
   });
@@ -113,12 +113,12 @@ const LearningPage = () => {
         <div className="flex-1 flex flex-col">
           {/* Video player area */}
           <div className="bg-black flex items-center justify-center aspect-video max-h-[70vh]">
-            {currentLesson?.videoUrl ? (
+            {currentLesson?.video?.url ? (
               <video
                 key={currentLesson._id}
                 controls
                 className="w-full h-full"
-                src={currentLesson.videoUrl}
+                src={currentLesson.video.url}
               />
             ) : (
               <div className="text-center text-surface-200/40 px-8">

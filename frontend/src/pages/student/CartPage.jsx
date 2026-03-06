@@ -1,5 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import { Trash2, ShoppingCart, Tag } from 'lucide-react';
 import api from '../../lib/api';
 import { useCartStore } from '../../store/cartStore';
@@ -10,7 +10,6 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 
 const CartPage = () => {
-  const navigate = useNavigate();
   const { items, totalPrice, fetchCart, removeFromCart } = useCartStore();
   const [couponCode, setCouponCode] = useState('');
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -80,9 +79,9 @@ const CartPage = () => {
                 >
                   <Link to={`/course/${course.slug}`} className="shrink-0">
                     <div className="w-28 h-20 rounded-lg bg-surface-100 overflow-hidden">
-                      {course.thumbnail && (
+                      {course.thumbnail?.url && (
                         <img
-                          src={course.thumbnail}
+                          src={course.thumbnail.url}
                           alt={course.title}
                           className="w-full h-full object-cover"
                         />

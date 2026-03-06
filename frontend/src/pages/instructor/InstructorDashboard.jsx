@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
 import {
   DollarSign, Users, BookOpen, Star, TrendingUp, ArrowUpRight,
 } from 'lucide-react';

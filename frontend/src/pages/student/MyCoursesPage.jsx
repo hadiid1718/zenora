@@ -5,7 +5,7 @@ import api from '../../lib/api';
 import ProgressBar from '../../components/ui/ProgressBar';
 import EmptyState from '../../components/ui/EmptyState';
 import { CourseCardSkeleton } from '../../components/ui/Skeleton';
-import { formatDuration } from '../../lib/utils';
+
 
 const MyCoursesPage = () => {
   const { data, isLoading } = useQuery({
@@ -40,13 +40,13 @@ const MyCoursesPage = () => {
           {data.enrollments.map((enrollment) => (
             <Link
               key={enrollment._id}
-              to={`/learn/${enrollment.course?.slug || enrollment.course?._id}`}
+              to={`/learn/${enrollment.course?._id}`}
               className="group bg-surface-0 rounded-2xl border border-surface-200/60 overflow-hidden hover:shadow-card-hover transition-all"
             >
               <div className="aspect-video bg-surface-100 relative overflow-hidden">
-                {enrollment.course?.thumbnail && (
+                {enrollment.course?.thumbnail?.url && (
                   <img
-                    src={enrollment.course.thumbnail}
+                    src={enrollment.course.thumbnail.url}
                     alt={enrollment.course.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />

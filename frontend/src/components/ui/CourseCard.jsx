@@ -37,7 +37,7 @@ const CourseCard = ({ course, onWishlist, isWishlisted, className }) => {
       )}
     >
       {/* Thumbnail */}
-      <Link to={`/courses/${slug}`} className="block relative overflow-hidden aspect-video">
+      <Link to={`/course/${slug}`} className="block relative overflow-hidden aspect-video">
         <img
           src={thumbnail?.url || '/placeholder-course.jpg'}
           alt={title}
@@ -86,7 +86,7 @@ const CourseCard = ({ course, onWishlist, isWishlisted, className }) => {
       {/* Content */}
       <div className="p-4 space-y-3">
         {/* Title */}
-        <Link to={`/courses/${slug}`}>
+        <Link to={`/course/${slug}`}>
           <h3 className="font-semibold text-surface-900 line-clamp-2 leading-snug group-hover:text-brand-600 transition-colors">
             {title}
           </h3>

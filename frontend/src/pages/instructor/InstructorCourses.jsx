@@ -28,8 +28,8 @@ const InstructorCourses = () => {
       render: (row) => (
         <div className="flex items-center gap-3">
           <div className="w-16 h-10 rounded-lg bg-surface-100 overflow-hidden shrink-0">
-            {row.thumbnail && (
-              <img src={row.thumbnail} alt="" className="w-full h-full object-cover" />
+            {row.thumbnail?.url && (
+              <img src={row.thumbnail.url} alt="" className="w-full h-full object-cover" />
             )}
           </div>
           <div className="min-w-0">

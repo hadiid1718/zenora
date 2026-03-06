@@ -38,7 +38,7 @@ const AdminUsers = () => {
       render: (row) => (
         <div className="flex items-center gap-3">
           <Avatar
-            src={row.avatar}
+            src={row.avatar?.url}
             firstName={row.firstName}
             lastName={row.lastName}
             size="sm"

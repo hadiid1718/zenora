@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/api';
-import { formatNumber } from '../../lib/utils';
+
 import Button from '../../components/ui/Button';
 import CourseCard from '../../components/ui/CourseCard';
 import { CourseCardSkeleton } from '../../components/ui/Skeleton';
@@ -52,8 +52,8 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="relative gradient-hero overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-brand-500/8 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent-500/8 rounded-full blur-3xl" />
+          <div className="absolute top-1/3 left-1/4 w-150 h-150 bg-brand-500/8 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-125 h-125 bg-accent-500/8 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
@@ -73,7 +73,7 @@ const HomePage = () => {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6"
             >
               Learn without limits,{' '}
-              <span className="bg-gradient-to-r from-accent-300 to-accent-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-accent-300 to-accent-400 bg-clip-text text-transparent">
                 grow without boundaries
               </span>
             </motion.h1>
