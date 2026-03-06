@@ -179,7 +179,7 @@ export const getCourseBySlug = asyncHandler(async (req, res) => {
     }));
   }
 
-  await cacheSet(cacheKey, course, 600); // 10 min cache
+  await cacheSet(cacheKey, { course }, 600); // 10 min cache
 
   ApiResponse.success({ course }, 'Course retrieved').send(res);
 });

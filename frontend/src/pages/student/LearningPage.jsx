@@ -29,17 +29,19 @@ const LearningPage = () => {
 
   const completeMutation = useMutation({
     mutationFn: (lessonId) =>
-      api.post(`/student/courses/${data?.enrollment?.course?._id}/lessons/${lessonId}/complete`),
+      api.post(`/student/courses/${course?._id || courseId}/lessons/${lessonId}/complete`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['learning', courseId] });
       toast.success('Lesson completed!');
     },
   });
 
-  const course = data?.enrollment?.course;
+  const course = data?.course;
   const enrollment = data?.enrollment;
   const modules = course?.modules || [];
-  const completedLessons = new Set(enrollment?.completedLessons?.map(String) || []);
+  const completedLessons = new Set(
+    (enrollment?.progress?.completedLessons || []).map((l) => l.lessonId?.toString())
+  );
 
   // Find current lesson
   const allLessons = modules.flatMap((m, mi) =>

@@ -26,6 +26,8 @@ const CartPage = lazy(() => import('./pages/student/CartPage'));
 const WishlistPage = lazy(() => import('./pages/student/WishlistPage'));
 const CertificatesPage = lazy(() => import('./pages/student/CertificatesPage'));
 const CategoriesPage = lazy(() => import('./pages/student/CategoriesPage'));
+const ProfilePage = lazy(() => import('./pages/student/ProfilePage'));
+const SettingsPage = lazy(() => import('./pages/student/SettingsPage'));
 
 // Instructor
 const InstructorLoginPage = lazy(() => import('./pages/instructor/InstructorLoginPage'));
@@ -80,6 +82,8 @@ const App = () => (
           <Route path="/cart" element={<CartPage />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/certificates" element={<CertificatesPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>
 

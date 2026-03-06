@@ -14,9 +14,11 @@ import {
   getNotifications,
   markNotificationRead,
   markAllNotificationsRead,
+  updateStudentAvatar,
 } from '../controllers/studentController.js';
 import { authenticate } from '../middlewares/auth.js';
 import { reviewValidation } from '../middlewares/validate.js';
+import { uploadImage } from '../middlewares/upload.js';
 
 const router = Router();
 
@@ -47,5 +49,8 @@ router.get('/certificates', getCertificates);
 router.get('/notifications', getNotifications);
 router.put('/notifications/:id/read', markNotificationRead);
 router.put('/notifications/read-all', markAllNotificationsRead);
+
+// Settings
+router.put('/settings/avatar', uploadImage.single('avatar'), updateStudentAvatar);
 
 export default router;

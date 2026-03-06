@@ -9,6 +9,10 @@ import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import asyncHandler from '../utils/asyncHandler.js';
 import {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+} from '../config/cloudinary.js';
+import {
   buildPaginationMeta,
   generateCertificateNumber,
 } from '../utils/helpers.js';
@@ -370,4 +374,26 @@ export const markAllNotificationsRead = asyncHandler(async (req, res) => {
     { isRead: true }
   );
   ApiResponse.success(null, 'All notifications marked as read').send(res);
+});
+
+// @desc    Upload student avatar
+// @route   PUT /api/v1/student/settings/avatar
+export const updateStudentAvatar = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    throw ApiError.badRequest('Please upload an image');
+  }
+
+  if (req.user.avatar?.publicId) {
+    await deleteFromCloudinary(req.user.avatar.publicId);
+  }
+
+  const result = await uploadToCloudinary(req.file.path, 'avatars');
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { avatar: { url: result.url, publicId: result.publicId } },
+    { new: true }
+  );
+
+  ApiResponse.success({ user }, 'Avatar updated').send(res);
 });

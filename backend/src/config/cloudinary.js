@@ -15,12 +15,17 @@ export const uploadToCloudinary = async (
   folder,
   resourceType = 'auto'
 ) => {
-  const result = await cloudinary.uploader.upload(filePath, {
+  const options = {
     folder: `zenora/${folder}`,
     resource_type: resourceType,
-    quality: 'auto',
-    fetch_format: 'auto',
-  });
+  };
+
+  if (resourceType !== 'video') {
+    options.quality = 'auto';
+    options.fetch_format = 'auto';
+  }
+
+  const result = await cloudinary.uploader.upload(filePath, options);
   return {
     publicId: result.public_id,
     url: result.secure_url,
