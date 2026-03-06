@@ -4,11 +4,9 @@ import Order from '../models/Order.js';
 import Review from '../models/Review.js';
 import Coupon from '../models/Coupon.js';
 import Withdrawal from '../models/Withdrawal.js';
-import User from '../models/User.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import asyncHandler from '../utils/asyncHandler.js';
-import { buildPaginationMeta } from '../utils/helpers.js';
 
 // @desc    Instructor dashboard
 // @route   GET /api/v1/instructor/dashboard

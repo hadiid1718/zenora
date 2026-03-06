@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Upload, Plus, Trash2, GripVertical } from 'lucide-react';
+import { Upload, Plus, Trash2, Image, Video, X } from 'lucide-react';
 import api from '../../lib/api';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -40,7 +40,53 @@ const CreateCoursePage = () => {
     learningOutcomes: [''],
     requirements: [''],
   });
+  const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState('');
+  const [promoVideo, setPromoVideo] = useState(null);
+  const [videoPreview, setVideoPreview] = useState('');
   const [errors, setErrors] = useState({});
+  const thumbnailRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+  const handleThumbnailChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be under 5MB');
+      return;
+    }
+    const base64 = await fileToBase64(file);
+    setThumbnail(base64);
+    setThumbnailPreview(base64);
+  };
+
+  const handleVideoChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('video/')) {
+      toast.error('Please select a video file');
+      return;
+    }
+    if (file.size > 100 * 1024 * 1024) {
+      toast.error('Video must be under 100MB');
+      return;
+    }
+    const base64 = await fileToBase64(file);
+    setPromoVideo(base64);
+    setVideoPreview(URL.createObjectURL(file));
+  };
 
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
@@ -112,6 +158,8 @@ const CreateCoursePage = () => {
       requirements: form.requirements.filter((r) => r.trim()),
     };
     if (form.discountPrice) payload.discountPrice = Number(form.discountPrice);
+    if (thumbnail) payload.thumbnail = thumbnail;
+    if (promoVideo) payload.promoVideo = promoVideo;
 
     createMutation.mutate(payload);
   };
@@ -207,6 +255,113 @@ const CreateCoursePage = () => {
               step="0.01"
               value={form.discountPrice}
               onChange={handleChange('discountPrice')}
+            />
+          </div>
+        </div>
+
+        {/* Thumbnail & Promo Video */}
+        <div className="bg-surface-0 rounded-2xl border border-surface-200/60 p-6 space-y-5">
+          <h2 className="text-lg font-semibold text-surface-900">Media</h2>
+
+          {/* Thumbnail */}
+          <div>
+            <label className="block text-sm font-medium text-surface-800 mb-2">
+              Course Thumbnail
+            </label>
+            <p className="text-xs text-surface-800/40 mb-3">
+              Recommended: 1280x720px, JPEG or PNG, max 5MB
+            </p>
+            {thumbnailPreview ? (
+              <div className="relative inline-block rounded-xl overflow-hidden border border-surface-200/60">
+                <img
+                  src={thumbnailPreview}
+                  alt="Thumbnail preview"
+                  className="w-64 h-36 object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setThumbnail(null);
+                    setThumbnailPreview('');
+                    if (thumbnailRef.current) thumbnailRef.current.value = '';
+                  }}
+                  className="absolute top-2 right-2 p-1 rounded-lg bg-surface-900/60 text-white hover:bg-surface-900/80 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => thumbnailRef.current?.click()}
+                className="flex flex-col items-center justify-center w-64 h-36 rounded-xl border-2 border-dashed border-surface-200 hover:border-brand-300 hover:bg-brand-50/30 transition-colors cursor-pointer"
+              >
+                <Image className="w-8 h-8 text-surface-800/25 mb-2" />
+                <span className="text-sm font-medium text-surface-800/50">
+                  Upload Thumbnail
+                </span>
+                <span className="text-xs text-surface-800/30 mt-0.5">
+                  Click to browse
+                </span>
+              </button>
+            )}
+            <input
+              ref={thumbnailRef}
+              type="file"
+              accept="image/*"
+              onChange={handleThumbnailChange}
+              className="hidden"
+            />
+          </div>
+
+          {/* Promo Video */}
+          <div>
+            <label className="block text-sm font-medium text-surface-800 mb-2">
+              Promo Video
+            </label>
+            <p className="text-xs text-surface-800/40 mb-3">
+              A short preview video for your course, MP4 recommended, max 100MB
+            </p>
+            {videoPreview ? (
+              <div className="relative inline-block rounded-xl overflow-hidden border border-surface-200/60">
+                <video
+                  src={videoPreview}
+                  controls
+                  className="w-80 max-h-48 rounded-xl"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPromoVideo(null);
+                    setVideoPreview('');
+                    if (videoRef.current) videoRef.current.value = '';
+                  }}
+                  className="absolute top-2 right-2 p-1 rounded-lg bg-surface-900/60 text-white hover:bg-surface-900/80 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => videoRef.current?.click()}
+                className="flex flex-col items-center justify-center w-80 h-36 rounded-xl border-2 border-dashed border-surface-200 hover:border-brand-300 hover:bg-brand-50/30 transition-colors cursor-pointer"
+              >
+                <Video className="w-8 h-8 text-surface-800/25 mb-2" />
+                <span className="text-sm font-medium text-surface-800/50">
+                  Upload Promo Video
+                </span>
+                <span className="text-xs text-surface-800/30 mt-0.5">
+                  Click to browse
+                </span>
+              </button>
+            )}
+            <input
+              ref={videoRef}
+              type="file"
+              accept="video/*"
+              onChange={handleVideoChange}
+              className="hidden"
             />
           </div>
         </div>

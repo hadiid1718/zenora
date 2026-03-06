@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, BookOpen } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, BookOpen, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -56,23 +56,32 @@ const InstructorLoginPage = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
     >
+      {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-brand-100 flex items-center justify-center">
-            <BookOpen className="w-5 h-5 text-brand-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-surface-900">Instructor Login</h2>
-        </div>
-        <p className="text-surface-800/60">Sign in to manage your courses and students</p>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-50 border border-accent-100 text-xs font-medium text-accent-700 mb-5"
+        >
+          <BookOpen className="w-3.5 h-3.5" />
+          Instructor Portal
+        </motion.div>
+        <h2 className="text-[1.75rem] font-extrabold text-surface-900 tracking-tight">
+          Welcome back, Instructor
+        </h2>
+        <p className="mt-1.5 text-surface-800/55 text-[0.925rem]">
+          Sign in to manage your courses and students
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <Input
-          label="Email"
+          label="Email address"
           type="email"
           placeholder="you@example.com"
           icon={Mail}
@@ -82,7 +91,7 @@ const InstructorLoginPage = () => {
           autoComplete="email"
         />
 
-        <div>
+        <div className="relative">
           <Input
             label="Password"
             type={showPassword ? 'text' : 'password'}
@@ -96,41 +105,49 @@ const InstructorLoginPage = () => {
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-3 top-9 text-surface-800/40 hover:text-surface-800/70"
-            style={{ position: 'relative', float: 'right', marginTop: '-36px', marginRight: '12px' }}
+            className="absolute right-3 top-[38px] p-1 rounded-md text-surface-800/30 hover:text-surface-800/60 transition-colors"
           >
-            {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
         </div>
 
-        <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
+        <Button type="submit" className="w-full group" size="lg" isLoading={isLoading}>
           Sign In as Instructor
+          {!isLoading && (
+            <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" />
+          )}
         </Button>
       </form>
 
-      <div className="mt-6">
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-surface-200" />
-          </div>
-          <div className="relative flex justify-center text-xs">
-            <span className="bg-surface-50 px-4 text-surface-800/40 uppercase tracking-wider">Or</span>
-          </div>
+      {/* Divider */}
+      <div className="relative my-7">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-surface-200/80" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-surface-50 px-4 text-xs text-surface-800/35 uppercase tracking-widest">
+            or
+          </span>
         </div>
       </div>
 
-      <p className="mt-6 text-center text-sm text-surface-800/60">
+      <p className="text-center text-sm text-surface-800/55">
         Don&apos;t have an instructor account?{' '}
-        <Link to="/instructor/register" className="font-semibold text-brand-600 hover:text-brand-700">
+        <Link
+          to="/instructor/register"
+          className="font-semibold text-brand-600 hover:text-brand-700 transition-colors"
+        >
           Register as Instructor
         </Link>
       </p>
 
-      <p className="mt-3 text-center text-sm text-surface-800/60">
-        <Link to="/login" className="font-semibold text-brand-600 hover:text-brand-700">
-          &larr; Back to student login
-        </Link>
-      </p>
+      <Link
+        to="/login"
+        className="mt-5 flex items-center justify-center gap-1.5 text-sm font-medium text-surface-800/40 hover:text-brand-600 transition-colors"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Back to student login
+      </Link>
     </motion.div>
   );
 };

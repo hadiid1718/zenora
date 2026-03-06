@@ -1,6 +1,5 @@
 import Course from '../models/Course.js';
 import Category from '../models/Category.js';
-import Enrollment from '../models/Enrollment.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import asyncHandler from '../utils/asyncHandler.js';
@@ -27,11 +26,13 @@ export const createCourse = asyncHandler(async (req, res) => {
     requirements,
     targetAudience,
     tags,
+    thumbnail,
+    promoVideo,
   } = req.body;
 
   const slug = slugify(title) + '-' + Date.now().toString(36);
 
-  const course = await Course.create({
+  const courseData = {
     title,
     slug,
     subtitle,
@@ -46,7 +47,16 @@ export const createCourse = asyncHandler(async (req, res) => {
     targetAudience: targetAudience || [],
     tags: tags || [],
     isFree: parseFloat(price) === 0,
-  });
+  };
+
+  if (thumbnail) {
+    courseData.thumbnail = { url: thumbnail, publicId: '' };
+  }
+  if (promoVideo) {
+    courseData.promoVideo = { url: promoVideo, publicId: '' };
+  }
+
+  const course = await Course.create(courseData);
 
   await cacheDel('courses:*');
 

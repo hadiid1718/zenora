@@ -25,6 +25,7 @@ const LearningPage = lazy(() => import('./pages/student/LearningPage'));
 const CartPage = lazy(() => import('./pages/student/CartPage'));
 const WishlistPage = lazy(() => import('./pages/student/WishlistPage'));
 const CertificatesPage = lazy(() => import('./pages/student/CertificatesPage'));
+const CategoriesPage = lazy(() => import('./pages/student/CategoriesPage'));
 
 // Instructor
 const InstructorLoginPage = lazy(() => import('./pages/instructor/InstructorLoginPage'));
@@ -68,6 +69,7 @@ const App = () => (
       <Route element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/course/:slug" element={<CourseDetailPage />} />
 
         {/* Authenticated student */}

@@ -274,3 +274,81 @@
 {"level":"info","message":"::1 - - [06/Mar/2026:00:59:26 +0000] \"POST /api/v1/auth/logout HTTP/1.1\" 200 64 \"http://localhost:5173/instructor\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0\"","service":"zenora-api","timestamp":"2026-03-06T00:59:26.426Z"}
 {"level":"info","message":"::1 - - [06/Mar/2026:00:59:26 +0000] \"GET /api/v1/courses/featured HTTP/1.1\" 304 - \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0\"","service":"zenora-api","timestamp":"2026-03-06T00:59:26.515Z"}
 {"level":"info","message":"::1 - - [06/Mar/2026:00:59:26 +0000] \"GET /api/v1/courses?sort=popular&limit=8 HTTP/1.1\" 304 - \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0\"","service":"zenora-api","timestamp":"2026-03-06T00:59:26.518Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-02.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T10:35:06.153Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T10:35:06.159Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:06.174Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:06.175Z"}
+{"level":"warn","message":"Redis connection failed (running without cache):","service":"zenora-api","timestamp":"2026-03-06T10:35:06.175Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:06.227Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:06.228Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:06.338Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:06.340Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:06.499Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:06.502Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:06.706Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:06.708Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T10:35:06.980Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T10:35:06.981Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:06.983Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:06.983Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:07.294Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:07.295Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:07.658Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:07.659Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:08.064Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:08.064Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:08.523Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:08.523Z"}
+{"level":"warn","message":"Redis error (non-fatal):","service":"zenora-api","timestamp":"2026-03-06T10:35:09.035Z"}
+{"level":"warn","message":"Redis max retries reached, stopping reconnection","service":"zenora-api","timestamp":"2026-03-06T10:35:09.037Z"}
+{"level":"warn","message":"Redis connection closed","service":"zenora-api","timestamp":"2026-03-06T10:35:09.038Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-00.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T10:37:53.328Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T10:37:53.336Z"}
+{"level":"info","message":"Redis connected","service":"zenora-api","timestamp":"2026-03-06T10:37:53.352Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T10:37:54.126Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T10:37:54.127Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:38:03 +0000] \"GET /api/v1/courses/categories HTTP/1.1\" 200 74 \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0\"","service":"zenora-api","timestamp":"2026-03-06T10:38:03.391Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:38:03 +0000] \"GET /api/v1/courses/featured HTTP/1.1\" 200 77 \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0\"","service":"zenora-api","timestamp":"2026-03-06T10:38:03.399Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:38:03 +0000] \"GET /api/v1/courses?sort=popular&limit=8 HTTP/1.1\" 200 167 \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0\"","service":"zenora-api","timestamp":"2026-03-06T10:38:03.500Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:38:18 +0000] \"GET /api/v1/courses/featured HTTP/1.1\" 200 64 \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:38:18.144Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:38:18 +0000] \"GET /api/v1/courses/categories HTTP/1.1\" 200 58 \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:38:18.145Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:38:18 +0000] \"GET /api/v1/courses?sort=popular&limit=8 HTTP/1.1\" 200 176 \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:38:18.148Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:40:41 +0000] \"GET /api/v1/courses?page=1&limit=12&sort=newest HTTP/1.1\" 200 168 \"http://localhost:5173/courses\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:40:41.789Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-02.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T10:42:27.282Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T10:42:27.289Z"}
+{"level":"info","message":"Redis connected","service":"zenora-api","timestamp":"2026-03-06T10:42:27.309Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T10:42:28.090Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T10:42:28.090Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-01.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T10:42:59.565Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T10:42:59.569Z"}
+{"level":"info","message":"Redis connected","service":"zenora-api","timestamp":"2026-03-06T10:42:59.586Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T10:43:00.390Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T10:43:00.391Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-00.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T10:43:18.453Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T10:43:18.458Z"}
+{"level":"info","message":"Redis connected","service":"zenora-api","timestamp":"2026-03-06T10:43:18.476Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T10:43:19.257Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T10:43:19.257Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:44:58 +0000] \"GET /api/v1/courses/featured HTTP/1.1\" 304 - \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:44:58.187Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:44:58 +0000] \"GET /api/v1/courses/categories HTTP/1.1\" 304 - \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:44:58.188Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:44:58 +0000] \"GET /api/v1/courses?sort=popular&limit=8 HTTP/1.1\" 200 167 \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:44:58.440Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:45:04 +0000] \"GET /api/v1/courses?page=1&limit=12&sort=newest HTTP/1.1\" 200 177 \"http://localhost:5173/courses\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:45:04.562Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:45:07 +0000] \"GET /api/v1/courses?page=1&limit=12&sort=newest&level=beginner HTTP/1.1\" 200 168 \"http://localhost:5173/courses?level=beginner&page=1\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:45:07.775Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:45:08 +0000] \"GET /api/v1/courses?page=1&limit=12&sort=newest&level=intermediate HTTP/1.1\" 200 168 \"http://localhost:5173/courses?level=intermediate&page=1\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:45:08.780Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:45:09 +0000] \"GET /api/v1/courses?page=1&limit=12&sort=newest&level=advanced HTTP/1.1\" 200 168 \"http://localhost:5173/courses?level=advanced&page=1\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:45:09.648Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:47:01 +0000] \"GET /api/v1/courses/categories HTTP/1.1\" 304 - \"http://localhost:5173/courses\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:47:01.914Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:47:02 +0000] \"GET /api/v1/courses?page=1&limit=12&sort=newest HTTP/1.1\" 200 168 \"http://localhost:5173/courses\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:47:02.158Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-02.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T10:47:30.513Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T10:47:30.517Z"}
+{"level":"info","message":"Redis connected","service":"zenora-api","timestamp":"2026-03-06T10:47:30.535Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T10:47:31.334Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T10:47:31.335Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:47:39 +0000] \"GET /api/v1/courses?page=1&limit=12&sort=newest HTTP/1.1\" 200 177 \"http://localhost:5173/courses\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:47:39.873Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:47:39 +0000] \"GET /api/v1/courses/categories HTTP/1.1\" 304 - \"http://localhost:5173/courses\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:47:39.879Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:47:49 +0000] \"GET /api/v1/courses/featured HTTP/1.1\" 304 - \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:47:49.275Z"}
+{"level":"info","message":"::1 - - [06/Mar/2026:10:47:49 +0000] \"GET /api/v1/courses?sort=popular&limit=8 HTTP/1.1\" 200 176 \"http://localhost:5173/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T10:47:49.278Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-02.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T10:50:37.224Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T10:50:37.233Z"}
+{"level":"info","message":"Redis connected","service":"zenora-api","timestamp":"2026-03-06T10:50:37.253Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T10:50:38.020Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T10:50:38.021Z"}

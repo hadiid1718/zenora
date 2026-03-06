@@ -162,7 +162,7 @@ const Navbar = () => {
                     className="flex items-center gap-2 p-1 pr-2 rounded-xl hover:bg-surface-100 transition-colors"
                   >
                     <Avatar
-                      src={user?.avatar}
+                      src={user?.avatar?.url}
                       firstName={user?.firstName}
                       lastName={user?.lastName}
                       size="sm"

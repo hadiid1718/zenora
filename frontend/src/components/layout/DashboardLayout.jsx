@@ -123,7 +123,7 @@ const DashboardLayout = () => {
           </Link>
 
           <Avatar
-            src={user?.avatar}
+            src={user?.avatar?.url}
             firstName={user?.firstName}
             lastName={user?.lastName}
             size="sm"
@@ -185,7 +185,7 @@ const SidebarContent = ({ links, roleLabel, user, onLogout, onNavClick }) => (
     <div className="p-4 border-t border-surface-200/60">
       <div className="flex items-center gap-3 mb-3">
         <Avatar
-          src={user?.avatar}
+          src={user?.avatar?.url}
           firstName={user?.firstName}
           lastName={user?.lastName}
           size="sm"

@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import toast from 'react-hot-toast';
+
+const passwordChecks = [
+  { test: (v) => v.length >= 8, label: '8+ characters' },
+  { test: (v) => /[A-Z]/.test(v), label: 'Uppercase letter' },
+  { test: (v) => /\d/.test(v), label: 'Number' },
+];
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -61,13 +67,27 @@ const RegisterPage = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
     >
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-surface-900 mb-2">Create your account</h2>
-        <p className="text-surface-800/60">Start learning from the best instructors worldwide</p>
+      {/* Header */}
+      <div className="mb-7">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-xs font-medium text-brand-600 mb-5"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
+          Create Account
+        </motion.div>
+        <h2 className="text-[1.75rem] font-extrabold text-surface-900 tracking-tight">
+          Start learning today
+        </h2>
+        <p className="mt-1.5 text-surface-800/55 text-[0.925rem]">
+          Join thousands of learners advancing their careers
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -93,7 +113,7 @@ const RegisterPage = () => {
         </div>
 
         <Input
-          label="Email"
+          label="Email address"
           type="email"
           placeholder="you@example.com"
           icon={Mail}
@@ -103,16 +123,48 @@ const RegisterPage = () => {
           autoComplete="email"
         />
 
-        <Input
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          placeholder="Minimum 8 characters"
-          icon={Lock}
-          value={form.password}
-          onChange={handleChange('password')}
-          error={errors.password}
-          autoComplete="new-password"
-        />
+        <div className="relative">
+          <Input
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Create a strong password"
+            icon={Lock}
+            value={form.password}
+            onChange={handleChange('password')}
+            error={errors.password}
+            autoComplete="new-password"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((v) => !v)}
+            className="absolute right-3 top-[38px] p-1 rounded-md text-surface-800/30 hover:text-surface-800/60 transition-colors"
+          >
+            {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          </button>
+        </div>
+
+        {/* Password strength indicators */}
+        {form.password && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="flex flex-wrap gap-2"
+          >
+            {passwordChecks.map(({ test, label }) => (
+              <span
+                key={label}
+                className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md transition-colors ${
+                  test(form.password)
+                    ? 'bg-success-50 text-success-600'
+                    : 'bg-surface-100 text-surface-800/35'
+                }`}
+              >
+                <CheckCircle2 className="w-3 h-3" />
+                {label}
+              </span>
+            ))}
+          </motion.div>
+        )}
 
         <Input
           label="Confirm Password"
@@ -125,17 +177,7 @@ const RegisterPage = () => {
           autoComplete="new-password"
         />
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setShowPassword((v) => !v)}
-            className="text-xs text-surface-800/50 hover:text-brand-600 transition-colors"
-          >
-            {showPassword ? 'Hide' : 'Show'} passwords
-          </button>
-        </div>
-
-        <label className="flex items-start gap-2 cursor-pointer">
+        <label className="flex items-start gap-2.5 cursor-pointer select-none pt-1">
           <input
             type="checkbox"
             checked={agreed}
@@ -145,23 +187,29 @@ const RegisterPage = () => {
             }}
             className="mt-0.5 w-4 h-4 rounded border-surface-300 text-brand-600 focus:ring-brand-500"
           />
-          <span className="text-sm text-surface-800/60">
+          <span className="text-sm text-surface-800/55 leading-snug">
             I agree to the{' '}
             <Link to="/terms" className="text-brand-600 hover:underline">Terms of Service</Link>
             {' '}and{' '}
             <Link to="/privacy" className="text-brand-600 hover:underline">Privacy Policy</Link>
           </span>
         </label>
-        {errors.agreed && <p className="text-xs text-error-600">{errors.agreed}</p>}
+        {errors.agreed && <p className="text-xs text-error-600 -mt-1">{errors.agreed}</p>}
 
-        <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
+        <Button type="submit" className="w-full group" size="lg" isLoading={isLoading}>
           Create Account
+          {!isLoading && (
+            <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" />
+          )}
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-surface-800/60">
+      <p className="mt-7 text-center text-sm text-surface-800/55">
         Already have an account?{' '}
-        <Link to="/login" className="font-semibold text-brand-600 hover:text-brand-700">
+        <Link
+          to="/login"
+          className="font-semibold text-brand-600 hover:text-brand-700 transition-colors"
+        >
           Sign in
         </Link>
       </p>
