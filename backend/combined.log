@@ -666,3 +666,8 @@
 {"level":"info","message":"::1 - - [06/Mar/2026:12:03:50 +0000] \"GET /api/v1/student/reviews/69aabb7146de4fc972969542 HTTP/1.1\" 304 - \"http://localhost:5173/course/complete-react-developer-bootcamp-2026-mmetfm0l\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T12:03:50.430Z"}
 {"level":"info","message":"::1 - - [06/Mar/2026:12:04:59 +0000] \"GET /api/v1/courses/instructor/my-courses HTTP/1.1\" 304 - \"http://localhost:5173/instructor/reviews\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T12:04:59.245Z"}
 {"level":"info","message":"::1 - - [06/Mar/2026:12:04:59 +0000] \"GET /api/v1/student/reviews/69aabb7146de4fc972969542 HTTP/1.1\" 304 - \"http://localhost:5173/instructor/reviews\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\"","service":"zenora-api","timestamp":"2026-03-06T12:04:59.631Z"}
+{"level":"info","message":"MongoDB connected: ac-66q59g2-shard-00-02.srhcac0.mongodb.net","service":"zenora-api","timestamp":"2026-03-06T12:05:22.967Z"}
+{"level":"info","message":"Cloudinary configured","service":"zenora-api","timestamp":"2026-03-06T12:05:22.971Z"}
+{"level":"info","message":"Redis connected","service":"zenora-api","timestamp":"2026-03-06T12:05:22.988Z"}
+{"level":"info","message":"Zenora API server running on http://localhost:5000","service":"zenora-api","timestamp":"2026-03-06T12:05:23.775Z"}
+{"level":"info","message":"Environment: development","service":"zenora-api","timestamp":"2026-03-06T12:05:23.775Z"}
