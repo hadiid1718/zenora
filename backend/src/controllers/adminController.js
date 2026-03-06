@@ -270,6 +270,7 @@ export const approveCourse = asyncHandler(async (req, res) => {
   });
 
   await cacheDel('courses:*');
+  await cacheDel(`course:${course.slug}`);
 
   ApiResponse.success({ course }, 'Course approved and published').send(res);
 });

@@ -4,6 +4,7 @@ import Order from '../models/Order.js';
 import Review from '../models/Review.js';
 import Coupon from '../models/Coupon.js';
 import Withdrawal from '../models/Withdrawal.js';
+import User from '../models/User.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import asyncHandler from '../utils/asyncHandler.js';
@@ -254,4 +255,124 @@ export const replyToReview = asyncHandler(async (req, res) => {
   await review.save();
 
   ApiResponse.success({ review }, 'Reply added').send(res);
+});
+
+// @desc    Get overall analytics for instructor
+// @route   GET /api/v1/instructor/analytics
+export const getAnalytics = asyncHandler(async (req, res) => {
+  const courseIds = await Course.find({ instructor: req.user._id }).distinct(
+    '_id'
+  );
+
+  const [
+    courses,
+    totalStudents,
+    totalReviews,
+    enrollmentsByMonth,
+    revenueByMonth,
+    ratingDistribution,
+    topCourses,
+  ] = await Promise.all([
+    Course.find({ instructor: req.user._id })
+      .select('title totalStudents averageRating totalRatings status')
+      .sort({ totalStudents: -1 })
+      .lean(),
+    Enrollment.countDocuments({ course: { $in: courseIds } }),
+    Review.countDocuments({ course: { $in: courseIds } }),
+    Enrollment.aggregate([
+      { $match: { course: { $in: courseIds } } },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$createdAt' },
+            month: { $month: '$createdAt' },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { '_id.year': -1, '_id.month': -1 } },
+      { $limit: 12 },
+    ]),
+    Order.aggregate([
+      {
+        $match: {
+          status: 'completed',
+          'instructorEarnings.instructor': req.user._id,
+        },
+      },
+      { $unwind: '$instructorEarnings' },
+      { $match: { 'instructorEarnings.instructor': req.user._id } },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$createdAt' },
+            month: { $month: '$createdAt' },
+          },
+          revenue: { $sum: '$instructorEarnings.amount' },
+          orders: { $sum: 1 },
+        },
+      },
+      { $sort: { '_id.year': -1, '_id.month': -1 } },
+      { $limit: 12 },
+    ]),
+    Review.aggregate([
+      { $match: { course: { $in: courseIds } } },
+      { $group: { _id: '$rating', count: { $sum: 1 } } },
+      { $sort: { _id: -1 } },
+    ]),
+    Course.find({ instructor: req.user._id, status: 'published' })
+      .select('title totalStudents averageRating totalRatings price')
+      .sort({ totalStudents: -1 })
+      .limit(5)
+      .lean(),
+  ]);
+
+  const avgRating = courses.length
+    ? courses.reduce((sum, c) => sum + (c.averageRating || 0), 0) /
+        courses.filter(c => c.averageRating > 0).length || 0
+    : 0;
+
+  ApiResponse.success(
+    {
+      overview: {
+        totalCourses: courses.length,
+        publishedCourses: courses.filter(c => c.status === 'published').length,
+        totalStudents,
+        totalReviews,
+        totalRevenue: req.user.totalRevenue || 0,
+        averageRating: Math.round(avgRating * 10) / 10,
+      },
+      enrollmentsByMonth,
+      revenueByMonth,
+      ratingDistribution,
+      topCourses,
+    },
+    'Analytics retrieved'
+  ).send(res);
+});
+
+// @desc    Update instructor profile (avatar upload)
+// @route   PUT /api/v1/instructor/settings/avatar
+export const updateAvatar = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    throw ApiError.badRequest('Please upload an image');
+  }
+
+  const { uploadToCloudinary, deleteFromCloudinary } =
+    await import('../config/cloudinary.js');
+
+  // Delete old avatar if exists
+  if (req.user.avatar?.publicId) {
+    await deleteFromCloudinary(req.user.avatar.publicId);
+  }
+
+  const result = await uploadToCloudinary(req.file.path, 'zenora/avatars');
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { avatar: { url: result.secure_url, publicId: result.public_id } },
+    { new: true }
+  );
+
+  ApiResponse.success({ user }, 'Avatar updated').send(res);
 });

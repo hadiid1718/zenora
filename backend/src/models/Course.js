@@ -214,7 +214,7 @@ courseSchema.index({
 });
 
 // Calculate totals before save
-courseSchema.pre('save', function (next) {
+courseSchema.pre('save', function () {
   if (this.isModified('modules')) {
     let totalLessons = 0;
     let totalDuration = 0;
@@ -228,7 +228,6 @@ courseSchema.pre('save', function (next) {
     this.totalModules = this.modules.length;
     this.totalDuration = totalDuration;
   }
-  next();
 });
 
 const Course = mongoose.model('Course', courseSchema);

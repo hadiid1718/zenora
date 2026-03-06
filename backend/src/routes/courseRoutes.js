@@ -8,6 +8,7 @@ import {
   uploadThumbnail,
   addModule,
   addLesson,
+  uploadLessonVideo,
   submitForReview,
   getInstructorCourses,
   deleteCourse,
@@ -16,7 +17,7 @@ import {
 } from '../controllers/courseController.js';
 import { authenticate, authorize, optionalAuth } from '../middlewares/auth.js';
 import { createCourseValidation } from '../middlewares/validate.js';
-import { uploadImage } from '../middlewares/upload.js';
+import { uploadImage, uploadVideo } from '../middlewares/upload.js';
 import { apiLimiter, uploadLimiter } from '../middlewares/rateLimiter.js';
 
 const router = Router();
@@ -73,6 +74,14 @@ router.post(
   authenticate,
   authorize('instructor', 'admin'),
   addLesson
+);
+router.put(
+  '/:id/modules/:moduleId/lessons/:lessonId/video',
+  authenticate,
+  authorize('instructor', 'admin'),
+  uploadLimiter,
+  uploadVideo.single('video'),
+  uploadLessonVideo
 );
 router.put(
   '/:id/submit',

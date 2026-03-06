@@ -141,19 +141,26 @@ export const getCourseBySlug = asyncHandler(async (req, res) => {
   const cacheKey = `course:${slug}`;
   const cached = await cacheGet(cacheKey);
   if (cached) {
+    // If cached, still let the owner see it even if status changed
     return ApiResponse.success(cached, 'Course retrieved (cached)').send(res);
   }
 
-  const course = await Course.findOne({
-    slug,
-    status: { $in: [COURSE_STATUS.PUBLISHED, COURSE_STATUS.APPROVED] },
-  })
-    .populate(
-      'instructor',
-      'firstName lastName avatar headline bio totalStudents totalCourses'
-    )
+  // Build query: public users only see published/approved; course owner can see any status
+  const query = { slug };
+  const userId = req.user?._id;
+
+  let course = await Course.findOne({ ...query, status: { $in: [COURSE_STATUS.PUBLISHED, COURSE_STATUS.APPROVED] } })
+    .populate('instructor', 'firstName lastName avatar headline bio totalStudents totalCourses')
     .populate('category', 'name slug')
     .lean();
+
+  // If not found by public filter, check if the requester is the course owner
+  if (!course && userId) {
+    course = await Course.findOne({ slug, instructor: userId })
+      .populate('instructor', 'firstName lastName avatar headline bio totalStudents totalCourses')
+      .populate('category', 'name slug')
+      .lean();
+  }
 
   if (!course) {
     throw ApiError.notFound('Course not found');
@@ -334,6 +341,40 @@ export const addLesson = asyncHandler(async (req, res) => {
   ApiResponse.success({ course }, 'Lesson added').send(res);
 });
 
+// @desc    Upload video to lesson
+// @route   PUT /api/v1/courses/:id/modules/:moduleId/lessons/:lessonId/video
+export const uploadLessonVideo = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id);
+  if (!course) throw ApiError.notFound('Course not found');
+  if (course.instructor.toString() !== req.user._id.toString())
+    throw ApiError.forbidden('Not authorized');
+
+  const module = course.modules.id(req.params.moduleId);
+  if (!module) throw ApiError.notFound('Module not found');
+
+  const lesson = module.lessons.id(req.params.lessonId);
+  if (!lesson) throw ApiError.notFound('Lesson not found');
+
+  if (!req.file) throw ApiError.badRequest('Video file is required');
+
+  if (lesson.video?.publicId) {
+    await deleteFromCloudinary(lesson.video.publicId, 'video');
+  }
+
+  const result = await uploadToCloudinary(req.file.path, 'courses/videos', 'video');
+  lesson.video = {
+    url: result.url,
+    publicId: result.publicId,
+    duration: result.duration || 0,
+  };
+  lesson.duration = result.duration || 0;
+
+  await course.save();
+  await cacheDel(`course:${course.slug}`);
+
+  ApiResponse.success({ lesson }, 'Video uploaded').send(res);
+});
+
 // @desc    Submit course for review
 // @route   PUT /api/v1/courses/:id/submit
 export const submitForReview = asyncHandler(async (req, res) => {
@@ -442,7 +483,9 @@ export const getFeaturedCourses = asyncHandler(async (req, res) => {
 export const getCategories = asyncHandler(async (req, res) => {
   const cached = await cacheGet('categories:all');
   if (cached) {
-    return ApiResponse.success(cached, 'Categories (cached)').send(res);
+    // Normalize: handle both old (array) and new ({categories}) cache formats
+    const data = Array.isArray(cached) ? { categories: cached } : cached;
+    return ApiResponse.success(data, 'Categories (cached)').send(res);
   }
 
   const categories = await Category.find({ isActive: true, parent: null })
@@ -450,7 +493,7 @@ export const getCategories = asyncHandler(async (req, res) => {
     .sort({ sortOrder: 1 })
     .lean();
 
-  await cacheSet('categories:all', categories, 3600);
+  await cacheSet('categories:all', { categories }, 3600);
 
   ApiResponse.success({ categories }, 'Categories retrieved').send(res);
 });
