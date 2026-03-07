@@ -16,7 +16,7 @@ const AdminUsers = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['admin-users', page, search],
     queryFn: () => {
-      const params = new URLSearchParams({ page, limit: '20' });
+      const params = new URLSearchParams({ page, limit: '10' });
       if (search) params.set('q', search);
       return api.get(`/admin/users?${params}`).then((r) => r.data.data);
     },

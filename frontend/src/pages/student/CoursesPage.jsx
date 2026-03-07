@@ -45,7 +45,7 @@ const CoursesPage = () => {
     queryFn: () => {
       const params = new URLSearchParams();
       params.set('page', page);
-      params.set('limit', '12');
+      params.set('limit', '10');
       if (q) params.set('q', q);
       if (sort) params.set('sort', sort);
       if (category) params.set('category', category);

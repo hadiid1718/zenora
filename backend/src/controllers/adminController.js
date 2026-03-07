@@ -93,7 +93,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
 // @desc    Get all users
 // @route   GET /api/v1/admin/users
 export const getUsers = asyncHandler(async (req, res) => {
-  const { page = 1, limit = 20, role, search, status } = req.query;
+  const { page = 1, limit = 10, role, search, status } = req.query;
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
 
@@ -154,15 +154,23 @@ export const toggleUserStatus = asyncHandler(async (req, res) => {
 // @desc    Get pending instructor applications
 // @route   GET /api/v1/admin/instructors/pending
 export const getPendingInstructors = asyncHandler(async (req, res) => {
-  const users = await User.find({ instructorStatus: INSTRUCTOR_STATUS.PENDING })
+  const { page = 1, limit = 10 } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  const filter = { instructorStatus: INSTRUCTOR_STATUS.PENDING };
+  const total = await User.countDocuments(filter);
+  const users = await User.find(filter)
     .select(
       'firstName lastName email bio headline expertise instructorAppliedAt avatar'
     )
     .sort({ instructorAppliedAt: 1 })
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
     .lean();
 
   ApiResponse.success(
-    { instructors: users },
+    { instructors: users, pagination: buildPaginationMeta(total, pageNum, limitNum) },
     'Pending instructors retrieved'
   ).send(res);
 });
@@ -231,13 +239,24 @@ export const rejectInstructor = asyncHandler(async (req, res) => {
 // @desc    Get pending courses
 // @route   GET /api/v1/admin/courses/pending
 export const getPendingCourses = asyncHandler(async (req, res) => {
-  const courses = await Course.find({ status: COURSE_STATUS.PENDING })
+  const { page = 1, limit = 10 } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  const filter = { status: COURSE_STATUS.PENDING };
+  const total = await Course.countDocuments(filter);
+  const courses = await Course.find(filter)
     .populate('instructor', 'firstName lastName email avatar')
     .populate('category', 'name')
     .sort({ createdAt: 1 })
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
     .lean();
 
-  ApiResponse.success({ courses }, 'Pending courses retrieved').send(res);
+  ApiResponse.success(
+    { courses, pagination: buildPaginationMeta(total, pageNum, limitNum) },
+    'Pending courses retrieved'
+  ).send(res);
 });
 
 // @desc    Approve course
@@ -352,7 +371,7 @@ export const updateCategory = asyncHandler(async (req, res) => {
 // @desc    Get audit logs
 // @route   GET /api/v1/admin/audit-logs
 export const getAuditLogs = asyncHandler(async (req, res) => {
-  const { page = 1, limit = 50, action, resource } = req.query;
+  const { page = 1, limit = 10, action, resource } = req.query;
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
 
@@ -380,16 +399,25 @@ export const getAuditLogs = asyncHandler(async (req, res) => {
 // @desc    Get withdrawal requests
 // @route   GET /api/v1/admin/withdrawals
 export const getWithdrawals = asyncHandler(async (req, res) => {
-  const { status } = req.query;
+  const { page = 1, limit = 10, status } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
   const filter = {};
   if (status) filter.status = status;
 
+  const total = await Withdrawal.countDocuments(filter);
   const withdrawals = await Withdrawal.find(filter)
     .populate('instructor', 'firstName lastName email availableBalance')
     .sort({ createdAt: -1 })
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
     .lean();
 
-  ApiResponse.success({ withdrawals }, 'Withdrawals retrieved').send(res);
+  ApiResponse.success(
+    { withdrawals, pagination: buildPaginationMeta(total, pageNum, limitNum) },
+    'Withdrawals retrieved'
+  ).send(res);
 });
 
 // @desc    Process withdrawal

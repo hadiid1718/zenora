@@ -5,7 +5,7 @@ import api from '../../lib/api';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
-import DataTable from '../../components/ui/DataTable';
+import DataTable, { Pagination } from '../../components/ui/DataTable';
 import Modal from '../../components/ui/Modal';
 import Badge from '../../components/ui/Badge';
 import { formatDate, formatPrice } from '../../lib/utils';
@@ -14,6 +14,7 @@ import toast from 'react-hot-toast';
 const InstructorCoupons = () => {
   const queryClient = useQueryClient();
   const [showCreate, setShowCreate] = useState(false);
+  const [page, setPage] = useState(1);
   const [form, setForm] = useState({
     code: '',
     discountType: 'percentage',
@@ -24,8 +25,8 @@ const InstructorCoupons = () => {
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: ['instructor-coupons'],
-    queryFn: () => api.get('/instructor/coupons').then((r) => r.data.data),
+    queryKey: ['instructor-coupons', page],
+    queryFn: () => api.get('/instructor/coupons', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   const createMutation = useMutation({
@@ -131,6 +132,14 @@ const InstructorCoupons = () => {
         isLoading={isLoading}
         emptyMessage="No coupons created yet"
       />
+
+      {data?.pagination?.totalPages > 1 && (
+        <Pagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={setPage}
+        />
+      )}
 
       <Modal
         isOpen={showCreate}

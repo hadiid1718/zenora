@@ -1,16 +1,20 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { BookOpen, Clock, Award } from 'lucide-react';
 import api from '../../lib/api';
 import ProgressBar from '../../components/ui/ProgressBar';
 import EmptyState from '../../components/ui/EmptyState';
+import { Pagination } from '../../components/ui/DataTable';
 import { CourseCardSkeleton } from '../../components/ui/Skeleton';
 
 
 const MyCoursesPage = () => {
+  const [page, setPage] = useState(1);
+
   const { data, isLoading } = useQuery({
-    queryKey: ['enrolled-courses'],
-    queryFn: () => api.get('/student/courses').then((r) => r.data.data),
+    queryKey: ['enrolled-courses', page],
+    queryFn: () => api.get('/student/courses', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   if (isLoading) {
@@ -36,6 +40,7 @@ const MyCoursesPage = () => {
           action={{ label: 'Browse Courses', to: '/courses' }}
         />
       ) : (
+        <>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.enrollments.map((enrollment) => (
             <Link
@@ -72,6 +77,15 @@ const MyCoursesPage = () => {
             </Link>
           ))}
         </div>
+
+        {data?.pagination?.totalPages > 1 && (
+          <Pagination
+            page={page}
+            totalPages={data.pagination.totalPages}
+            onPageChange={setPage}
+          />
+        )}
+      </>
       )}
     </div>
   );

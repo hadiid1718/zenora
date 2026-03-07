@@ -5,7 +5,7 @@ import api from '../../lib/api';
 import { formatPrice, formatDate } from '../../lib/utils';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
-import DataTable from '../../components/ui/DataTable';
+import DataTable, { Pagination } from '../../components/ui/DataTable';
 import Badge from '../../components/ui/Badge';
 import Modal from '../../components/ui/Modal';
 import StatCard from '../../components/ui/StatCard';
@@ -22,10 +22,11 @@ const InstructorWithdrawals = () => {
   const queryClient = useQueryClient();
   const [showRequest, setShowRequest] = useState(false);
   const [amount, setAmount] = useState('');
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['instructor-withdrawals'],
-    queryFn: () => api.get('/instructor/withdrawals').then((r) => r.data.data),
+    queryKey: ['instructor-withdrawals', page],
+    queryFn: () => api.get('/instructor/withdrawals', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   const requestMutation = useMutation({
@@ -99,6 +100,14 @@ const InstructorWithdrawals = () => {
         isLoading={isLoading}
         emptyMessage="No withdrawal requests"
       />
+
+      {data?.pagination?.totalPages > 1 && (
+        <Pagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={setPage}
+        />
+      )}
 
       <Modal isOpen={showRequest} onClose={() => setShowRequest(false)} title="Request Withdrawal">
         <div className="space-y-4">

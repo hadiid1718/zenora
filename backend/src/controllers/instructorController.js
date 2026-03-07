@@ -8,6 +8,7 @@ import User from '../models/User.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import asyncHandler from '../utils/asyncHandler.js';
+import { buildPaginationMeta } from '../utils/helpers.js';
 
 // @desc    Instructor dashboard
 // @route   GET /api/v1/instructor/dashboard
@@ -175,12 +176,23 @@ export const createCoupon = asyncHandler(async (req, res) => {
 // @desc    Get instructor's coupons
 // @route   GET /api/v1/instructor/coupons
 export const getCoupons = asyncHandler(async (req, res) => {
-  const coupons = await Coupon.find({ instructor: req.user._id })
+  const { page = 1, limit = 10 } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  const filter = { instructor: req.user._id };
+  const total = await Coupon.countDocuments(filter);
+  const coupons = await Coupon.find(filter)
     .populate('course', 'title')
     .sort({ createdAt: -1 })
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
     .lean();
 
-  ApiResponse.success({ coupons }, 'Coupons retrieved').send(res);
+  ApiResponse.success(
+    { coupons, pagination: buildPaginationMeta(total, pageNum, limitNum) },
+    'Coupons retrieved'
+  ).send(res);
 });
 
 // @desc    Delete coupon
@@ -232,11 +244,22 @@ export const requestWithdrawal = asyncHandler(async (req, res) => {
 // @desc    Get withdrawal history
 // @route   GET /api/v1/instructor/withdrawals
 export const getWithdrawals = asyncHandler(async (req, res) => {
-  const withdrawals = await Withdrawal.find({ instructor: req.user._id })
+  const { page = 1, limit = 10 } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  const filter = { instructor: req.user._id };
+  const total = await Withdrawal.countDocuments(filter);
+  const withdrawals = await Withdrawal.find(filter)
     .sort({ createdAt: -1 })
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
     .lean();
 
-  ApiResponse.success({ withdrawals }, 'Withdrawals retrieved').send(res);
+  ApiResponse.success(
+    { withdrawals, pagination: buildPaginationMeta(total, pageNum, limitNum) },
+    'Withdrawals retrieved'
+  ).send(res);
 });
 
 // @desc    Reply to review

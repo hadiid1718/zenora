@@ -1,10 +1,11 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Plus, Edit, Eye, MoreHorizontal } from 'lucide-react';
 import api from '../../lib/api';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
-import DataTable from '../../components/ui/DataTable';
+import DataTable, { Pagination } from '../../components/ui/DataTable';
 import { formatPrice, formatDate, formatNumber } from '../../lib/utils';
 
 const statusVariant = {
@@ -16,9 +17,11 @@ const statusVariant = {
 };
 
 const InstructorCourses = () => {
+  const [page, setPage] = useState(1);
+
   const { data, isLoading } = useQuery({
-    queryKey: ['instructor-courses'],
-    queryFn: () => api.get('/courses/instructor/my-courses').then((r) => r.data.data),
+    queryKey: ['instructor-courses', page],
+    queryFn: () => api.get('/courses/instructor/my-courses', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   const columns = [
@@ -96,6 +99,14 @@ const InstructorCourses = () => {
         isLoading={isLoading}
         emptyMessage="No courses created yet"
       />
+
+      {data?.pagination?.totalPages > 1 && (
+        <Pagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 };

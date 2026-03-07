@@ -20,7 +20,7 @@ import {
 // @desc    Get enrolled courses
 // @route   GET /api/v1/student/courses
 export const getEnrolledCourses = asyncHandler(async (req, res) => {
-  const { page = 1, limit = 12 } = req.query;
+  const { page = 1, limit = 10 } = req.query;
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
 
@@ -332,12 +332,23 @@ export const getCourseReviews = asyncHandler(async (req, res) => {
 // @desc    Get certificates
 // @route   GET /api/v1/student/certificates
 export const getCertificates = asyncHandler(async (req, res) => {
-  const certificates = await Certificate.find({ student: req.user._id })
+  const { page = 1, limit = 10 } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  const filter = { student: req.user._id };
+  const total = await Certificate.countDocuments(filter);
+  const certificates = await Certificate.find(filter)
     .populate('course', 'title slug thumbnail instructor')
     .sort({ issuedAt: -1 })
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
     .lean();
 
-  ApiResponse.success({ certificates }, 'Certificates retrieved').send(res);
+  ApiResponse.success(
+    { certificates, pagination: buildPaginationMeta(total, pageNum, limitNum) },
+    'Certificates retrieved'
+  ).send(res);
 });
 
 // @desc    Get notifications

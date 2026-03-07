@@ -1,18 +1,20 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Check, X, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../../lib/api';
-import DataTable from '../../components/ui/DataTable';
+import DataTable, { Pagination } from '../../components/ui/DataTable';
 import Badge from '../../components/ui/Badge';
 import { formatDate, formatPrice } from '../../lib/utils';
 import toast from 'react-hot-toast';
 
 const AdminCourses = () => {
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-pending-courses'],
-    queryFn: () => api.get('/admin/courses/pending').then((r) => r.data.data),
+    queryKey: ['admin-pending-courses', page],
+    queryFn: () => api.get('/admin/courses/pending', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   const approveMutation = useMutation({
@@ -117,6 +119,14 @@ const AdminCourses = () => {
         isLoading={isLoading}
         emptyMessage="No courses pending approval"
       />
+
+      {data?.pagination?.totalPages > 1 && (
+        <Pagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 };

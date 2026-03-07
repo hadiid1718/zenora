@@ -10,6 +10,7 @@ import AuditLog from '../models/AuditLog.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import asyncHandler from '../utils/asyncHandler.js';
+import { buildPaginationMeta } from '../utils/helpers.js';
 
 // @desc    Create checkout session
 // @route   POST /api/v1/payments/checkout
@@ -303,10 +304,21 @@ export const getOrderBySession = asyncHandler(async (req, res) => {
 // @desc    Get user's orders
 // @route   GET /api/v1/payments/orders
 export const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id })
+  const { page = 1, limit = 10 } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  const filter = { user: req.user._id };
+  const total = await Order.countDocuments(filter);
+  const orders = await Order.find(filter)
     .populate('items.course', 'title slug thumbnail')
     .sort({ createdAt: -1 })
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
     .lean();
 
-  ApiResponse.success({ orders }, 'Orders retrieved').send(res);
+  ApiResponse.success(
+    { orders, pagination: buildPaginationMeta(total, pageNum, limitNum) },
+    'Orders retrieved'
+  ).send(res);
 });

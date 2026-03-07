@@ -22,7 +22,7 @@ const AdminAuditLogs = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['admin-audit-logs', page],
     queryFn: () =>
-      api.get('/admin/audit-logs', { params: { page, limit: 20 } }).then((r) => r.data.data),
+      api.get('/admin/audit-logs', { params: { page, limit: 10 } }).then((r) => r.data.data),
     keepPreviousData: true,
   });
 
@@ -86,11 +86,11 @@ const AdminAuditLogs = () => {
         emptyMessage="No audit logs yet"
       />
 
-      {data?.pagination && data.pagination.pages > 1 && (
+      {data?.pagination?.totalPages > 1 && (
         <div className="mt-4">
           <Pagination
             page={page}
-            totalPages={data.pagination.pages}
+            totalPages={data.pagination.totalPages}
             onPageChange={setPage}
           />
         </div>

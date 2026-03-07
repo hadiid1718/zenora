@@ -1,13 +1,17 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Award, Download } from 'lucide-react';
 import api from '../../lib/api';
 import EmptyState from '../../components/ui/EmptyState';
+import { Pagination } from '../../components/ui/DataTable';
 import { formatDate } from '../../lib/utils';
 
 const CertificatesPage = () => {
+  const [page, setPage] = useState(1);
+
   const { data, isLoading } = useQuery({
-    queryKey: ['certificates'],
-    queryFn: () => api.get('/student/certificates').then((r) => r.data.data),
+    queryKey: ['certificates', page],
+    queryFn: () => api.get('/student/certificates', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   if (!isLoading && (!data?.certificates || data.certificates.length === 0)) {
@@ -66,6 +70,14 @@ const CertificatesPage = () => {
               </div>
             ))}
       </div>
+
+      {data?.pagination?.totalPages > 1 && (
+        <Pagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 };

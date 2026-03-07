@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Check, X, ShieldCheck } from 'lucide-react';
 import api from '../../lib/api';
-import DataTable from '../../components/ui/DataTable';
+import DataTable, { Pagination } from '../../components/ui/DataTable';
 import Avatar from '../../components/ui/Avatar';
 import Badge from '../../components/ui/Badge';
 import EmptyState from '../../components/ui/EmptyState';
@@ -10,10 +11,11 @@ import toast from 'react-hot-toast';
 
 const AdminInstructors = () => {
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-pending-instructors'],
-    queryFn: () => api.get('/admin/instructors/pending').then((r) => r.data.data),
+    queryKey: ['admin-pending-instructors', page],
+    queryFn: () => api.get('/admin/instructors/pending', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   const approveMutation = useMutation({
@@ -118,6 +120,14 @@ const AdminInstructors = () => {
         data={data?.instructors || []}
         isLoading={isLoading}
       />
+
+      {data?.pagination?.totalPages > 1 && (
+        <Pagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 };

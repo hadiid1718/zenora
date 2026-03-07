@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CheckCircle, XCircle } from 'lucide-react';
 import api from '../../lib/api';
-import DataTable from '../../components/ui/DataTable';
+import DataTable, { Pagination } from '../../components/ui/DataTable';
 import Badge from '../../components/ui/Badge';
 import { formatDate, formatPrice } from '../../lib/utils';
 import toast from 'react-hot-toast';
@@ -14,10 +15,11 @@ const statusMap = {
 
 const AdminWithdrawals = () => {
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-withdrawals'],
-    queryFn: () => api.get('/admin/withdrawals').then((r) => r.data.data),
+    queryKey: ['admin-withdrawals', page],
+    queryFn: () => api.get('/admin/withdrawals', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   const processMutation = useMutation({
@@ -109,6 +111,14 @@ const AdminWithdrawals = () => {
         isLoading={isLoading}
         emptyMessage="No withdrawal requests"
       />
+
+      {data?.pagination?.totalPages > 1 && (
+        <Pagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 };
