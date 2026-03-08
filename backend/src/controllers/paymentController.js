@@ -15,16 +15,19 @@ import { buildPaginationMeta } from '../utils/helpers.js';
 // @desc    Create checkout session
 // @route   POST /api/v1/payments/checkout
 export const createCheckout = asyncHandler(async (req, res) => {
-  const { courseIds, couponCode } = req.body;
+  const { courseIds, items, couponCode } = req.body;
 
-  if (!courseIds || courseIds.length === 0) {
+  // Support both { courseIds: [...] } and { items: [{ courseId }] } formats
+  const resolvedCourseIds = courseIds || items?.map((i) => i.courseId);
+
+  if (!resolvedCourseIds || resolvedCourseIds.length === 0) {
     throw ApiError.badRequest('At least one course is required');
   }
 
   // Check if already enrolled
   const existingEnrollments = await Enrollment.find({
     student: req.user._id,
-    course: { $in: courseIds },
+    course: { $in: resolvedCourseIds },
   });
 
   if (existingEnrollments.length > 0) {
@@ -34,11 +37,11 @@ export const createCheckout = asyncHandler(async (req, res) => {
   }
 
   const courses = await Course.find({
-    _id: { $in: courseIds },
+    _id: { $in: resolvedCourseIds },
     status: 'published',
   }).populate('instructor', 'firstName lastName');
 
-  if (courses.length !== courseIds.length) {
+  if (courses.length !== resolvedCourseIds.length) {
     throw ApiError.badRequest('One or more courses not found or not available');
   }
 
@@ -106,7 +109,7 @@ export const createCheckout = asyncHandler(async (req, res) => {
 
     // Update student
     await User.findByIdAndUpdate(req.user._id, {
-      $push: { enrolledCourses: { $each: courseIds } },
+      $push: { enrolledCourses: { $each: resolvedCourseIds } },
     });
 
     // Update course stats

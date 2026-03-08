@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, ShoppingCart, Tag } from 'lucide-react';
 import api from '../../lib/api';
 import { useCartStore } from '../../store/cartStore';
@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 const CartPage = () => {
   const { items, totalPrice, fetchCart, removeFromCart } = useCartStore();
+  const navigate = useNavigate();
   const [couponCode, setCouponCode] = useState('');
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
@@ -38,7 +39,11 @@ const CartPage = () => {
       if (couponCode.trim()) payload.couponCode = couponCode.trim();
 
       const { data } = await api.post('/payments/checkout', payload);
-      window.location.href = data.data.url;
+      if (data.data.sessionUrl) {
+        window.location.href = data.data.sessionUrl;
+      } else {
+        navigate('/payment/success');
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Checkout failed');
       setIsCheckingOut(false);

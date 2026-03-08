@@ -61,7 +61,11 @@ const CourseDetailPage = () => {
       const { data } = await api.post('/payments/checkout', {
         items: [{ courseId: course._id }],
       });
-      window.location.href = data.data.url;
+      if (data.data.sessionUrl) {
+        window.location.href = data.data.sessionUrl;
+      } else {
+        navigate('/payment/success');
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Checkout failed');
     }

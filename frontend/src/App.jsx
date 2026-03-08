@@ -28,6 +28,8 @@ const CertificatesPage = lazy(() => import('./pages/student/CertificatesPage'));
 const CategoriesPage = lazy(() => import('./pages/student/CategoriesPage'));
 const ProfilePage = lazy(() => import('./pages/student/ProfilePage'));
 const SettingsPage = lazy(() => import('./pages/student/SettingsPage'));
+const PaymentSuccessPage = lazy(() => import('./pages/student/PaymentSuccessPage'));
+const PaymentCancelPage = lazy(() => import('./pages/student/PaymentCancelPage'));
 
 // Instructor
 const InstructorLoginPage = lazy(() => import('./pages/instructor/InstructorLoginPage'));
@@ -84,6 +86,8 @@ const App = () => (
           <Route path="/certificates" element={<CertificatesPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/payment/success" element={<PaymentSuccessPage />} />
+          <Route path="/payment/cancel" element={<PaymentCancelPage />} />
         </Route>
       </Route>
 
