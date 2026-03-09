@@ -13,12 +13,6 @@ const PaymentSuccessPage = () => {
   const fetchCart = useCartStore((s) => s.fetchCart);
   const queryClient = useQueryClient();
 
-  // Refresh cart and invalidate enrolled courses cache after successful payment
-  useEffect(() => {
-    fetchCart();
-    queryClient.invalidateQueries({ queryKey: ['enrolled-courses'] });
-  }, [fetchCart, queryClient]);
-
   const { data, isLoading } = useQuery({
     queryKey: ['order', sessionId],
     queryFn: () =>
@@ -27,6 +21,19 @@ const PaymentSuccessPage = () => {
     retry: 3,
     retryDelay: 2000,
   });
+
+  // Once order is verified & loaded, invalidate all related caches
+  useEffect(() => {
+    if (data?.order) {
+      fetchCart();
+      queryClient.invalidateQueries({ queryKey: ['enrolled-courses'] });
+      queryClient.invalidateQueries({ queryKey: ['instructor-dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['instructor-analytics'] });
+      queryClient.invalidateQueries({ queryKey: ['instructor-courses'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+    }
+  }, [data, fetchCart, queryClient]);
 
   const order = data?.order;
 

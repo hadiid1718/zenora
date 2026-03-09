@@ -9,8 +9,10 @@ import {
   getPendingCourses,
   approveCourse,
   rejectCourse,
+  getCategories,
   createCategory,
   updateCategory,
+  deleteCategory,
   getAuditLogs,
   getWithdrawals,
   processWithdrawal,
@@ -31,8 +33,10 @@ router.put('/instructors/:id/reject', rejectInstructor);
 router.get('/courses/pending', getPendingCourses);
 router.put('/courses/:id/approve', approveCourse);
 router.put('/courses/:id/reject', rejectCourse);
+router.get('/categories', getCategories);
 router.post('/categories', createCategory);
 router.put('/categories/:id', updateCategory);
+router.delete('/categories/:id', deleteCategory);
 router.get('/audit-logs', getAuditLogs);
 router.get('/withdrawals', getWithdrawals);
 router.put('/withdrawals/:id/process', processWithdrawal);

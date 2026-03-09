@@ -91,7 +91,7 @@ const EditCoursePage = () => {
     mutationFn: (file) => {
       const formData = new FormData();
       formData.append('thumbnail', file);
-      return api.post(`/courses/${id}/thumbnail`, formData, {
+      return api.put(`/courses/${id}/thumbnail`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     },

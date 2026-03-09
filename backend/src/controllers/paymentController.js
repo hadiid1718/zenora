@@ -202,6 +202,11 @@ export const stripeWebhook = asyncHandler(async (req, res) => {
     const order = await Order.findById(orderId).populate('items.course');
     if (!order) return res.status(200).json({ received: true });
 
+    // Skip if already processed (by verify endpoint or previous webhook)
+    if (order.status === 'completed') {
+      return res.status(200).json({ received: true });
+    }
+
     order.payment.status = 'completed';
     order.payment.stripePaymentIntentId = session.payment_intent;
     order.payment.paidAt = new Date();
@@ -289,19 +294,117 @@ export const stripeWebhook = asyncHandler(async (req, res) => {
   res.status(200).json({ received: true });
 });
 
-// @desc    Get order by session ID
+// @desc    Verify payment & complete order if webhook hasn't fired yet
 // @route   GET /api/v1/payments/order/:sessionId
 export const getOrderBySession = asyncHandler(async (req, res) => {
   const order = await Order.findOne({
     'payment.stripeSessionId': req.params.sessionId,
     user: req.user._id,
-  })
-    .populate('items.course', 'title slug thumbnail')
-    .lean();
+  });
 
   if (!order) throw ApiError.notFound('Order not found');
 
-  ApiResponse.success({ order }, 'Order retrieved').send(res);
+  // If order is still pending, verify with Stripe and complete it
+  if (order.status === 'pending') {
+    const session = await stripe.checkout.sessions.retrieve(
+      req.params.sessionId
+    );
+
+    if (session.payment_status === 'paid') {
+      await Order.populate(order, { path: 'items.course' });
+
+      order.payment.status = 'completed';
+      order.payment.stripePaymentIntentId = session.payment_intent;
+      order.payment.paidAt = new Date();
+      order.status = 'completed';
+
+      const platformFeeRate =
+        parseInt(process.env.PLATFORM_FEE_PERCENTAGE) || 30;
+      let totalPlatformFee = 0;
+      const instructorEarnings = [];
+
+      for (const item of order.items) {
+        const platformFee =
+          Math.round(((item.price * platformFeeRate) / 100) * 100) / 100;
+        const instructorEarning =
+          Math.round((item.price - platformFee) * 100) / 100;
+        totalPlatformFee += platformFee;
+
+        instructorEarnings.push({
+          instructor: item.instructor,
+          amount: instructorEarning,
+          courseId: item.course._id || item.course,
+        });
+
+        await User.findByIdAndUpdate(item.instructor, {
+          $inc: {
+            totalRevenue: instructorEarning,
+            availableBalance: instructorEarning,
+            totalStudents: 1,
+          },
+        });
+
+        await Course.findByIdAndUpdate(item.course._id || item.course, {
+          $inc: { totalStudents: 1, totalRevenue: item.price },
+        });
+
+        const existingEnrollment = await Enrollment.findOne({
+          student: order.user,
+          course: item.course._id || item.course,
+        });
+        if (!existingEnrollment) {
+          await Enrollment.create({
+            student: order.user,
+            course: item.course._id || item.course,
+            order: order._id,
+          });
+        }
+      }
+
+      order.platformFee = totalPlatformFee;
+      order.instructorEarnings = instructorEarnings;
+      await order.save();
+
+      await User.findByIdAndUpdate(order.user, {
+        $addToSet: {
+          enrolledCourses: {
+            $each: order.items.map((i) => i.course._id || i.course),
+          },
+        },
+      });
+
+      await Cart.findOneAndUpdate({ user: order.user }, { items: [] });
+
+      if (order.coupon) {
+        await Coupon.findByIdAndUpdate(order.coupon, {
+          $inc: { usedCount: 1 },
+          $addToSet: { usedBy: order.user },
+        });
+      }
+
+      await Notification.create({
+        user: order.user,
+        type: 'enrollment',
+        title: 'Enrollment Successful',
+        message: `You have been enrolled in ${order.items.length} course(s).`,
+        link: '/my-courses',
+      });
+
+      await AuditLog.create({
+        action: 'order_complete',
+        resource: 'order',
+        resourceId: order._id,
+        user: order.user,
+      });
+    }
+  }
+
+  // Re-fetch with populated course data for the response
+  const populatedOrder = await Order.findById(order._id)
+    .populate('items.course', 'title slug thumbnail')
+    .lean();
+
+  ApiResponse.success({ order: populatedOrder }, 'Order retrieved').send(res);
 });
 
 // @desc    Get user's orders

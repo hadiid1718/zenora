@@ -2,14 +2,21 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Wallet, Plus, ArrowDownRight } from 'lucide-react';
 import api from '../../lib/api';
-import { formatPrice, formatDate } from '../../lib/utils';
+import { formatCurrency, formatDate } from '../../lib/utils';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
+import Select from '../../components/ui/Select';
 import DataTable, { Pagination } from '../../components/ui/DataTable';
 import Badge from '../../components/ui/Badge';
 import Modal from '../../components/ui/Modal';
 import StatCard from '../../components/ui/StatCard';
 import toast from 'react-hot-toast';
+
+const methodOptions = [
+  { value: 'bank_transfer', label: 'Bank Transfer' },
+  { value: 'paypal', label: 'PayPal' },
+  { value: 'stripe_connect', label: 'Stripe Connect' },
+];
 
 const statusVariant = {
   pending: 'warning',
@@ -22,6 +29,8 @@ const InstructorWithdrawals = () => {
   const queryClient = useQueryClient();
   const [showRequest, setShowRequest] = useState(false);
   const [amount, setAmount] = useState('');
+  const [method, setMethod] = useState('bank_transfer');
+  const [accountDetails, setAccountDetails] = useState({});
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
@@ -30,11 +39,13 @@ const InstructorWithdrawals = () => {
   });
 
   const requestMutation = useMutation({
-    mutationFn: (amount) => api.post('/instructor/withdrawals', { amount }),
+    mutationFn: (data) => api.post('/instructor/withdrawals', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['instructor-withdrawals'] });
       setShowRequest(false);
       setAmount('');
+      setMethod('bank_transfer');
+      setAccountDetails({});
       toast.success('Withdrawal requested');
     },
     onError: (err) => toast.error(err.response?.data?.message || 'Request failed'),
@@ -44,7 +55,7 @@ const InstructorWithdrawals = () => {
     {
       key: 'amount',
       label: 'Amount',
-      render: (row) => <span className="text-sm font-medium">{formatPrice(row.amount)}</span>,
+      render: (row) => <span className="text-sm font-medium">{formatCurrency(row.amount)}</span>,
     },
     {
       key: 'status',
@@ -79,17 +90,17 @@ const InstructorWithdrawals = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
         <StatCard
           label="Available Balance"
-          value={formatPrice(data?.balance || 0)}
+          value={formatCurrency(data?.balance ?? 0)}
           icon={Wallet}
         />
         <StatCard
           label="Total Withdrawn"
-          value={formatPrice(data?.totalWithdrawn || 0)}
+          value={formatCurrency(data?.totalWithdrawn ?? 0)}
           icon={ArrowDownRight}
         />
         <StatCard
           label="Pending"
-          value={formatPrice(data?.pendingAmount || 0)}
+          value={formatCurrency(data?.pendingAmount ?? 0)}
           icon={Wallet}
         />
       </div>
@@ -112,7 +123,7 @@ const InstructorWithdrawals = () => {
       <Modal isOpen={showRequest} onClose={() => setShowRequest(false)} title="Request Withdrawal">
         <div className="space-y-4">
           <p className="text-sm text-surface-800/60">
-            Available balance: <strong>{formatPrice(data?.balance || 0)}</strong>
+            Available balance: <strong>{formatCurrency(data?.balance ?? 0)}</strong>
           </p>
           <Input
             label="Amount (USD)"
@@ -123,9 +134,54 @@ const InstructorWithdrawals = () => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
+          <Select
+            label="Withdrawal Method"
+            value={method}
+            onChange={(e) => { setMethod(e.target.value); setAccountDetails({}); }}
+            options={methodOptions}
+          />
+          {method === 'bank_transfer' && (
+            <>
+              <Input
+                label="Bank Name"
+                placeholder="e.g. Chase Bank"
+                value={accountDetails.bankName || ''}
+                onChange={(e) => setAccountDetails((p) => ({ ...p, bankName: e.target.value }))}
+              />
+              <Input
+                label="Account Number"
+                placeholder="Account number"
+                value={accountDetails.accountNumber || ''}
+                onChange={(e) => setAccountDetails((p) => ({ ...p, accountNumber: e.target.value }))}
+              />
+              <Input
+                label="Routing Number"
+                placeholder="Routing number"
+                value={accountDetails.routingNumber || ''}
+                onChange={(e) => setAccountDetails((p) => ({ ...p, routingNumber: e.target.value }))}
+              />
+            </>
+          )}
+          {method === 'paypal' && (
+            <Input
+              label="PayPal Email"
+              type="email"
+              placeholder="you@example.com"
+              value={accountDetails.email || ''}
+              onChange={(e) => setAccountDetails((p) => ({ ...p, email: e.target.value }))}
+            />
+          )}
+          {method === 'stripe_connect' && (
+            <Input
+              label="Stripe Account ID"
+              placeholder="acct_..."
+              value={accountDetails.stripeAccountId || ''}
+              onChange={(e) => setAccountDetails((p) => ({ ...p, stripeAccountId: e.target.value }))}
+            />
+          )}
           <div className="flex gap-2">
             <Button
-              onClick={() => requestMutation.mutate(Number(amount))}
+              onClick={() => requestMutation.mutate({ amount: Number(amount), method, accountDetails })}
               isLoading={requestMutation.isPending}
             >
               Submit Request

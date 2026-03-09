@@ -28,7 +28,7 @@ const AdminInstructors = () => {
   });
 
   const rejectMutation = useMutation({
-    mutationFn: (userId) => api.patch(`/admin/instructors/${userId}/reject`),
+    mutationFn: (userId) => api.put(`/admin/instructors/${userId}/reject`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-pending-instructors'] });
       toast.success('Application rejected');

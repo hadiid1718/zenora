@@ -324,7 +324,27 @@ export const rejectCourse = asyncHandler(async (req, res) => {
   ApiResponse.success(null, 'Course rejected').send(res);
 });
 
-// @desc    Manage categories
+// @desc    Get all categories
+// @route   GET /api/v1/admin/categories
+export const getCategories = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  const total = await Category.countDocuments();
+  const categories = await Category.find()
+    .sort({ sortOrder: 1, name: 1 })
+    .skip((pageNum - 1) * limitNum)
+    .limit(limitNum)
+    .lean();
+
+  ApiResponse.success(
+    { categories, pagination: buildPaginationMeta(total, pageNum, limitNum) },
+    'Categories retrieved'
+  ).send(res);
+});
+
+// @desc    Create category
 // @route   POST /api/v1/admin/categories
 export const createCategory = asyncHandler(async (req, res) => {
   const { name, description, parent, icon, sortOrder } = req.body;
@@ -366,6 +386,19 @@ export const updateCategory = asyncHandler(async (req, res) => {
   await cacheDel('categories:*');
 
   ApiResponse.success({ category }, 'Category updated').send(res);
+});
+
+// @desc    Delete category
+// @route   DELETE /api/v1/admin/categories/:id
+export const deleteCategory = asyncHandler(async (req, res) => {
+  const category = await Category.findById(req.params.id);
+  if (!category) throw ApiError.notFound('Category not found');
+  if (category.courseCount > 0) {
+    throw ApiError.badRequest('Cannot delete category with existing courses');
+  }
+  await category.deleteOne();
+  await cacheDel('categories:*');
+  ApiResponse.success(null, 'Category deleted').send(res);
 });
 
 // @desc    Get audit logs

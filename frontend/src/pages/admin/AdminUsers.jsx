@@ -23,7 +23,7 @@ const AdminUsers = () => {
   });
 
   const toggleMutation = useMutation({
-    mutationFn: (userId) => api.patch(`/admin/users/${userId}/toggle-status`),
+    mutationFn: (userId) => api.put(`/admin/users/${userId}/toggle-status`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       toast.success('User status updated');

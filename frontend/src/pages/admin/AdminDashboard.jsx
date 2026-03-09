@@ -3,7 +3,7 @@ import {
   DollarSign, Users, BookOpen, ShieldCheck, TrendingUp,
 } from 'lucide-react';
 import api from '../../lib/api';
-import { formatPrice, formatNumber } from '../../lib/utils';
+import { formatCurrency, formatNumber } from '../../lib/utils';
 import StatCard from '../../components/ui/StatCard';
 import { DashboardStatSkeleton } from '../../components/ui/Skeleton';
 
@@ -33,7 +33,7 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard
           label="Total Revenue"
-          value={formatPrice(stats.totalRevenue || 0)}
+          value={formatCurrency(stats.totalRevenue)}
           icon={DollarSign}
         />
         <StatCard
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
               return (
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
                   <span className="text-xs text-surface-800/40">
-                    {formatPrice(item.revenue)}
+                    {formatCurrency(item.revenue)}
                   </span>
                   <div
                     className="w-full rounded-t-lg gradient-brand transition-all duration-300"

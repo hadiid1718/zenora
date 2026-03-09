@@ -23,8 +23,8 @@ const AdminWithdrawals = () => {
   });
 
   const processMutation = useMutation({
-    mutationFn: ({ id, status, note }) =>
-      api.patch(`/admin/withdrawals/${id}/process`, { status, adminNote: note }),
+    mutationFn: ({ id, action, reason }) =>
+      api.put(`/admin/withdrawals/${id}/process`, { action, reason }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-withdrawals'] });
       toast.success('Withdrawal processed');
@@ -76,7 +76,7 @@ const AdminWithdrawals = () => {
           <div className="flex items-center gap-1">
             <button
               onClick={() =>
-                processMutation.mutate({ id: row._id, status: 'completed' })
+                processMutation.mutate({ id: row._id, action: 'approve' })
               }
               className="p-1.5 rounded-lg text-success-600 hover:bg-success-50 transition-colors"
               title="Approve"
@@ -85,11 +85,11 @@ const AdminWithdrawals = () => {
             </button>
             <button
               onClick={() => {
-                const note = window.prompt('Rejection reason:');
+                const reason = window.prompt('Rejection reason:');
                 processMutation.mutate({
                   id: row._id,
-                  status: 'rejected',
-                  note: note || undefined,
+                  action: 'reject',
+                  reason: reason || undefined,
                 });
               }}
               className="p-1.5 rounded-lg text-error-600 hover:bg-error-50 transition-colors"

@@ -4,6 +4,7 @@ import { Plus, Pencil, Trash2 } from 'lucide-react';
 import api from '../../lib/api';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
+import { Pagination } from '../../components/ui/DataTable';
 import Modal from '../../components/ui/Modal';
 import toast from 'react-hot-toast';
 
@@ -12,16 +13,17 @@ const AdminCategories = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [name, setName] = useState('');
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-categories'],
-    queryFn: () => api.get('/admin/categories').then((r) => r.data.data),
+    queryKey: ['admin-categories', page],
+    queryFn: () => api.get('/admin/categories', { params: { page, limit: 10 } }).then((r) => r.data.data),
   });
 
   const saveMutation = useMutation({
     mutationFn: (payload) =>
       editing
-        ? api.patch(`/admin/categories/${editing._id}`, payload)
+        ? api.put(`/admin/categories/${editing._id}`, payload)
         : api.post('/admin/categories', payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-categories'] });
@@ -103,6 +105,14 @@ const AdminCategories = () => {
             </div>
           ))}
         </div>
+      )}
+
+      {data?.pagination?.totalPages > 1 && (
+        <Pagination
+          page={page}
+          totalPages={data.pagination.totalPages}
+          onPageChange={setPage}
+        />
       )}
 
       <Modal isOpen={isOpen} onClose={handleClose} title={editing ? 'Edit Category' : 'New Category'}>

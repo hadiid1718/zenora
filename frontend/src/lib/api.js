@@ -42,6 +42,28 @@ api.interceptors.response.use(
         const newToken = data.data.accessToken;
         useAuthStore.getState().setAccessToken(newToken);
 
+        // Fetch updated user info after token refresh
+        try {
+          const { data: meData } = await axios.get(`${API_BASE_URL}/auth/me`, {
+            headers: { Authorization: `Bearer ${newToken}` },
+            withCredentials: true,
+          });
+          const refreshedUser = meData.data.user;
+          const storedUser = useAuthStore.getState().user;
+
+          useAuthStore.setState({ user: refreshedUser });
+
+          // If the role changed (session was overwritten by another login),
+          // redirect to the correct login page
+          if (storedUser && refreshedUser.role !== storedUser.role) {
+            const loginPaths = { admin: '/admin/login', instructor: '/instructor/login' };
+            window.location.href = loginPaths[storedUser.role] || '/login';
+            return Promise.reject(new Error('Session changed, redirecting to login'));
+          }
+        } catch {
+          // If fetching user fails, continue with the refreshed token
+        }
+
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (refreshError) {

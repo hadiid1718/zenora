@@ -13,6 +13,13 @@ export function formatPrice(price) {
   }).format(price);
 }
 
+export function formatCurrency(amount) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(amount || 0);
+}
+
 export function formatDuration(seconds) {
   if (!seconds) return '0m';
   const hours = Math.floor(seconds / 3600);

@@ -256,8 +256,31 @@ export const getWithdrawals = asyncHandler(async (req, res) => {
     .limit(limitNum)
     .lean();
 
+  const [stats] = await Withdrawal.aggregate([
+    { $match: { instructor: req.user._id } },
+    {
+      $group: {
+        _id: null,
+        totalWithdrawn: {
+          $sum: { $cond: [{ $eq: ['$status', 'completed'] }, '$amount', 0] },
+        },
+        pendingAmount: {
+          $sum: {
+            $cond: [{ $in: ['$status', ['pending', 'processing']] }, '$amount', 0],
+          },
+        },
+      },
+    },
+  ]);
+
   ApiResponse.success(
-    { withdrawals, pagination: buildPaginationMeta(total, pageNum, limitNum) },
+    {
+      withdrawals,
+      balance: req.user.availableBalance || 0,
+      totalWithdrawn: stats?.totalWithdrawn || 0,
+      pendingAmount: stats?.pendingAmount || 0,
+      pagination: buildPaginationMeta(total, pageNum, limitNum),
+    },
     'Withdrawals retrieved'
   ).send(res);
 });

@@ -28,7 +28,7 @@ const AdminCourses = () => {
 
   const rejectMutation = useMutation({
     mutationFn: ({ courseId, reason }) =>
-      api.patch(`/admin/courses/${courseId}/reject`, { reason }),
+      api.put(`/admin/courses/${courseId}/reject`, { reason }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-pending-courses'] });
       toast.success('Course rejected');
